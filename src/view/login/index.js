@@ -1,97 +1,124 @@
-import React, { useState, useEffect } from 'react';
-import './login.css'
-import { Link, Navigate} from 'react-router-dom';
-
+import React, { useState } from 'react';
+import './login.css';
+import { Link, Navigate } from 'react-router-dom';
 
 import firebase from '../../config/firebase';
 import { useSelector, useDispatch } from 'react-redux';
-
 
 import logo from '../../public/imagem3.png';
 
 function Login() {
 
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [msgTipo, setMsgTipo] = useState('');
 
-    const [email, setEmail] = useState();
-    const [senha, setSenha] = useState();
-    const [msgTipo, setMsgTipo] = useState();
     const dispatch = useDispatch();
-   
 
+    const usuarioLogado = useSelector(state => state.usuarioLogado);
 
-    useEffect(() => {
-    return () => {
-        setEmail('');
-        setSenha('');
-        setMsgTipo('');
-    };
-}, []);
-    
-    
+    // LOGIN EMAIL
     function logar() {
+        firebase.auth()
+            .signInWithEmailAndPassword(email, senha)
+            .then(() => {
+                setMsgTipo('sucesso');
 
-        firebase.auth().signInWithEmailAndPassword(email, senha).then(resultado => {
-            setMsgTipo('sucesso');
-            setTimeout(() => {
-                dispatch ({type: 'LOG_IN', usuarioEmail: email})
-            }, 2000);
-
-        }).catch(erro => {
-            setMsgTipo('erro');
-
-        });
-
+                setTimeout(() => {
+                    dispatch({
+                        type: 'LOG_IN',
+                        usuarioEmail: email
+                    });
+                }, 800);
+            })
+            .catch(() => {
+                setMsgTipo('erro');
+            });
     }
-    
-    function logarComGoogle(){
+
+    // GOOGLE LOGIN (CORRIGIDO SEM COOP)
+    function logarComGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider)
-        .then((result) => {
-            const user = result.user;
-            dispatch({type: 'LOG_IN', usuarioEmail: user.email});
-        })
-        .catch((error) => {
-           console.error(error);
-           setMsgTipo('erro');
-        });
-}
+            .then((result) => {
+                dispatch({
+                    type: 'LOG_IN',
+                    usuarioEmail: result.user.email
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+                setMsgTipo('erro');
+            });
+    }
+
+    // REDIRECT SIMPLES E LIMPO
+    if (usuarioLogado) {
+        return <Navigate to="/home" />;
+    }
 
     return (
-        <div className="login-content d-flex align-items-center">
-                {useSelector(state => state.usuarioLogado) > 0 ? <Navigate to='/' /> : null }
-                
-                <form className="form-signin mx-auto">
-                <div className="text-center mb-4">
-               
-              
-                <img className="logo" src={logo} alt="Logo do Salão New-Look" />
-                <h1 className="h3 mb-3 font-weight-normal text-white font-weight-bold ">Login</h1>
-                </div>
+        <div className="login-container">
 
-                <input onChange={(e) => setEmail(e.target.value)} type="email" id="inputEmail" class="form-control my-2" placeholder="Email" />
-                <input onChange={(e) => setSenha(e.target.value)} type="password" id="inputPassword" class="form-control my-2" placeholder="Senha" />
-                
-                <button onClick={logar} class="btn btn-lg  btn-block btn-login" type="button">Logar</button>
-                
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-                <button onClick={logarComGoogle} className="btn btn-lg  btn-block btn-login-google" type="button"><i className="fab fa-google"></i> Logar com Google</button>
-                 
-                
-                <div className="msg-login texte-white text-center my-5">
-                    {msgTipo === 'sucesso' && <span><strong>WoW!</strong> Você esta conectado!</span>}
-                    {msgTipo === 'erro' && <span><strong>Ops!</strong> Verifique se a senha ou usuário estão corretos!</span>}
+            <div className="login-card">
 
-                </div>
-                
-                <div className="opcoes-login mt-5 text-center">
-                    <Link to="/usuariorecuperarsenha" className="mx-2">Recuperar Senha</Link>
-                    <span className="text-white">&#9733;</span>
-                    <Link to='/novousuario' className="mx-2">Quero Cadastrar</Link>
-                
-                </div>
-            </form>
+                <form className="form-signin">
+
+                    <div className="text-center mb-4">
+                        <img className="logo-img" src={logo} alt="Logo" />
+                        <h1 className="logo-title">New Look</h1>
+                        <p className="logo-sub">Barbearia</p>
+                        <h2 className="login-title">Login</h2>
+                    </div>
+
+                    <input
+                        onChange={(e) => setEmail(e.target.value)}
+                        type="email"
+                        className="form-control my-2"
+                        placeholder="Email"
+                    />
+
+                    <input
+                        onChange={(e) => setSenha(e.target.value)}
+                        type="password"
+                        className="form-control my-2"
+                        placeholder="Senha"
+                    />
+
+                    <button onClick={logar} type="button" className="btn-login">
+                        Entrar
+                    </button>
+
+                    <div className="divider">
+                        <span>Ou continue com</span>
+                    </div>
+
+                    <button onClick={logarComGoogle} className="btn-google" type="button">
+                    <img 
+                    src="https://www.svgrepo.com/show/475656/google-color.svg" 
+                    alt="Google"
+                    className="google-icon"
+                    />
+                    Entrar com Google
+                    </button>
+
+
+
+                    <div className="msg-login text-center my-3">
+                        {msgTipo === 'erro' && <span>Email ou senha inválidos</span>}
+                        {msgTipo === 'sucesso' && <span>Login realizado!</span>}
+                    </div>
+
+                    <div className="opcoes-login text-center">
+                        <Link to="/usuariorecuperarsenha">Recuperar Senha</Link>
+                        <span> | </span>
+                        <Link to="/novousuario">Criar conta</Link>
+                    </div>
+
+                </form>
+            </div>
         </div>
-    )
+    );
 }
 
 export default Login;

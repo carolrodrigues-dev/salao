@@ -1,52 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import {Link} from 'react-router-dom';
-import firebase from '../../config/firebase';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import './tipo-servico.css';
-import { createRoot } from 'react-dom/client';
 
-function TipoServico({id, img, cliente, descricao, servico, tipo, profissional, data, hora, detalhes, visualizacoes}){
+function TipoServico({
+    id,
+    cliente,
+    descricao,
+    servico,
+    tipo,
+    profissional,
+    data,
+    hora,
+    detalhes,
+    visualizacoes
+}) {
 
-     const [urlImagem, setUrlImagem] = useState();
+    const formatarData = (valor) => {
+        if (typeof valor === 'object' && valor?.seconds) {
+            return new Date(valor.seconds * 1000).toLocaleString();
+        }
+        return valor;
+    };
 
-     useEffect(() => {
-        firebase.storage().ref(`imagens/${img}`).getDownloadURL().then(url => setUrlImagem(url));
-     }, [urlImagem]);
+    return (
+        <div className="card-servico">
 
+            <div className="conteudo">
 
-     
-     return(
-        <div className='col-md-3 col-sm-12'>
-            <img src={urlImagem} className='card-img-top img-cartao' alt='Imagem do Corte' />
-
-            <div className='card-body'>
-                <h5>{cliente}</h5>          
-                <p className='card-text text-justify'>
-                    {detalhes}
-                    {descricao}</p>
-                    <h5>{tipo}</h5> 
-                    <h5>{profissional}</h5>
-                    <p className='card-text text-justify'>
-                    {data}</p>
-                    <p className='card-text text-justify'>
-                    {hora}</p>
-                <div className='card-body'>
-                    <h5>{servico}</h5>
+                <div className="topo">
+                    <h3>{cliente}</h3>
+                    <span className="tipo">{tipo}</span>
                 </div>
 
-                <div className='row rodape-card d-flex align-items-center'>
-                    <div className='col-6'>
-                    <Link to={'/detalhes/' + id} className='btn btn-sm btn-detalhes'>+detalhes</Link>
-                    </div>
+                <p className="servico">{servico}</p>
 
-                    <div className='col-6 text-right'>
-                        <i className='fas fa-eye'></i> <span>{visualizacoes}</span>
+                <p className="descricao">
+                    {detalhes} {descricao}
+                </p>
 
+                <div className="info">
+                    <span>👤 {profissional}</span>
+                    <span>📅 {formatarData(data)}</span>
+                    <span>⏰ {formatarData(hora)}</span>
+                </div>
+
+                <div className="rodape">
+                    <Link to={`/detalhes/${id}`} className="btn-detalhes">
+                        Ver detalhes
+                    </Link>
+
+                    <div className="views">
+                        👁 {visualizacoes}
                     </div>
                 </div>
+
             </div>
         </div>
-    
-     )
+    );
 }
 
 export default TipoServico;

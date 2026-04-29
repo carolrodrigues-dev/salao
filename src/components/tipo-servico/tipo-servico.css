@@ -1,26 +1,114 @@
-.rodape-card {
-    color: #8181F7;
-    height: 35px;
+/* CARD PRINCIPAL */
+.card-servico {
+    background: #1c1c1c;
+    border-radius: 12px;
+    overflow: hidden;
+    color: #fff;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 
-.btn-detalhes{
+.card-servico:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* IMAGEM */
+.imagem-container img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* CONTEÚDO */
+.conteudo {
+    padding: 16px;
+}
+
+/* TOPO */
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topo h3 {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* TAG (tipo de serviço) */
+.tipo {
+    background: #8181F7; /* mantive sua cor */
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* SERVIÇO */
+.servico {
+    color: #8181F7;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+/* DESCRIÇÃO */
+.descricao {
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 12px;
+
+    /* controle de texto (melhor que o seu antigo) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* INFORMAÇÕES */
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+/* RODAPÉ */
+.rodape {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* BOTÃO */
+.btn-detalhes {
     background-color: #8181F7;
     color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
 }
 
-.btn-detalhes:hover{
+.btn-detalhes:hover {
     background-color: #008B8B;
     color: #fff;
 }
 
-.card-text{
-    max-height: 70px;
-    min-height: 70%;
-    overflow: hidden;
+/* VISUALIZAÇÕES */
+.views {
+    font-size: 13px;
+    color: #aaa;
 }
 
-.img-cartao{
-    max-height: 200px;
-    min-width: 100%;
-    min-width: 100%;
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .imagem-container img {
+        height: 150px;
+    }
 }
