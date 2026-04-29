@@ -4,24 +4,34 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
 
 ---
 
+## 📸 Demonstração
+
+### Tela de Login
+
+<p align="center">
+  <img src="assets/login.png" width="500"/>
+</p>
+
+---
+
 ## 📌 Funcionalidades
 
-- 🔐 Sistema de login de usuários
-- 📅 Agendamento de horários
-- 🚫 Validação para evitar horários duplicados
-- 📋 Listagem de agendamentos
-- ✏️ Edição e exclusão de agendamentos
-- 📊 Organização dos atendimentos em tempo real
+- 🔐 Sistema de login de usuários  
+- 📅 Agendamento de horários  
+- 🚫 Validação para evitar horários duplicados  
+- 📋 Listagem de agendamentos  
+- ✏️ Edição e exclusão de agendamentos  
+- 📊 Organização dos atendimentos em tempo real  
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-- React.js
-- JavaScript (ES6+)
-- Firebase (Authentication / Firestore)
-- HTML5
-- CSS3
+- React.js  
+- JavaScript (ES6+)  
+- Firebase (Authentication / Firestore)  
+- HTML5  
+- CSS3  
 
 ---
 
