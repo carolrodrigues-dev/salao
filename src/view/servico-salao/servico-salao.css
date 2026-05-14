@@ -1,9 +1,184 @@
-.btn-cadastro{
-    background-color:#8181F7 ;
-    color: #fff;
+/* FUNDO */
+body{
+    background:
+    radial-gradient(
+        circle at top left,
+        rgba(212,175,55,0.08),
+        transparent 25%
+    ),
+
+    #0b0b0b;
+
+    min-height: 100vh;
 }
 
-.btn-cadastro:hover{
-    background-color: #008B8B;
+/* CONTAINER */
+.col-12.mt-5{
+    max-width: 950px;
+
+    margin: 50px auto;
+
+    padding: 40px;
+
+    background:
+    rgba(255,255,255,0.03);
+
+    border:
+    1px solid rgba(212,175,55,0.08);
+
+    border-radius: 26px;
+
+    backdrop-filter: blur(12px);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.30);
+}
+
+/* TÍTULO */
+h3{
     color: #fff;
+
+    font-size: 34px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 35px;
+}
+
+/* LABEL */
+label{
+    color: #d4af37;
+
+    font-weight: 600;
+
+    margin-bottom: 10px;
+
+    display: block;
+}
+
+/* INPUTS */
+.form-control{
+    background: #141414 !important;
+
+    border:
+    1px solid rgba(212,175,55,0.12) !important;
+
+    color: #fff !important;
+
+    border-radius: 16px !important;
+
+    padding: 16px 18px !important;
+
+    min-height: 56px;
+
+    transition: 0.3s;
+}
+
+/* TEXTAREA */
+textarea.form-control{
+    min-height: 140px;
+    resize: none;
+}
+
+/* SELECT */
+select.form-control{
+    cursor: pointer;
+}
+
+/* PLACEHOLDER */
+.form-control::placeholder{
+    color: #777;
+}
+
+/* FOCUS */
+.form-control:focus{
+    box-shadow:
+    0 0 0 4px rgba(212,175,55,0.08) !important;
+
+    border:
+    1px solid #d4af37 !important;
+
+    background: #181818 !important;
+}
+
+/* INPUT FILE */
+input[type="file"]{
+    padding: 14px !important;
+}
+
+/* ESPAÇAMENTO */
+.form-group{
+    margin-bottom: 26px;
+}
+
+/* BOTÃO */
+.btn-cadastro{
+    background:
+    linear-gradient(
+        90deg,
+        #cfa64a,
+        #f1d77a
+    );
+
+    color: #000;
+
+    border: none;
+
+    border-radius: 16px;
+
+    min-height: 58px;
+
+    font-weight: 800;
+
+    font-size: 15px;
+
+    letter-spacing: 1px;
+
+    transition: 0.3s;
+}
+
+/* HOVER BOTÃO */
+.btn-cadastro:hover{
+    transform:
+    translateY(-3px);
+
+    box-shadow:
+    0 15px 35px rgba(212,175,55,0.18);
+
+    color: #000;
+
+    opacity: 0.97;
+}
+
+/* MENSAGEM */
+.msg-login{
+    color: white;
+
+    font-size: 15px;
+
+    margin-top: 10px;
+}
+
+/* SPINNER */
+.spinner-border{
+    width: 3rem;
+    height: 3rem;
+}
+
+/* RESPONSIVO */
+@media(max-width: 768px){
+
+    .col-12.mt-5{
+        margin: 20px;
+
+        padding: 25px;
+    }
+
+    h3{
+        font-size: 26px;
+        text-align: center;
+    }
+
 }

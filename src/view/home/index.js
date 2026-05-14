@@ -62,6 +62,7 @@ function Home() {
                                 id={item.id}
                                 img={item.foto}
                                 cliente={item.cliente}
+                                telefone={item.telefone}
                                 servico={item.servico}
                                 tipo={item.tipo}
                                 descricao={item.descricao}

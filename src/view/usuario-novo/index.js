@@ -9,6 +9,7 @@ function NovoUsuario () {
    
     const [email, setEmail] = useState();
     const [senha, setSenha] = useState();
+    const [telefone, setTelefone] = useState();
     const [msgTipo, setMsgTipo] = useState();
     const [msg, setMsg] = useState();
     const [carregando, setCarregando] = useState();
@@ -61,6 +62,7 @@ function NovoUsuario () {
             
             <input onChange={(e) => setEmail (e.target.value) } type="email" className="form-control my-2" placeholder="Email" />
             <input onChange={(e) => setSenha (e.target.value) } type="password" className="form-control my-2" placeholder="Senha" />
+            <input onChange={(e) => setTelefone (e.target.value) } type="text" className="form-control my-2" placeholder="Telefone" />
             
             {
                 carregando ? <div class="spinner-border text-success" role="status"><span class="sr-only">Loading...</span></div>
@@ -69,7 +71,7 @@ function NovoUsuario () {
             }
             
             <div className="msg-login text-black text-center my-5">
-                 {msgTipo === 'sucesso' && <span><strong>WoW!</strong> Usuário cadastrado com sucesso!</span>}
+                 {msgTipo === 'sucesso' && <span>Usuário cadastrado com sucesso!</span>}
                  {msgTipo === 'erro' && <span><strong>Ops!</strong> {msg} </span>}
                 
             </div>

@@ -1,0 +1,181 @@
+/* BODY */
+body{
+    margin: 0;
+    padding: 0;
+    background: #070707;
+    font-family: Arial, sans-serif;
+}
+
+/* CONTAINER */
+.container-clientes{
+    padding: 30px 20px 50px 20px;
+}
+
+/* TOPO */
+.topo-clientes{
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.01)
+    );
+
+    border:
+    1px solid rgba(212,175,55,0.08);
+
+    border-radius: 26px;
+
+    padding: 35px;
+
+    margin-bottom: 35px;
+
+    backdrop-filter: blur(10px);
+}
+
+/* TITULO */
+.titulo-clientes{
+    color: #fff;
+
+    font-size: 48px;
+
+    font-weight: 800;
+
+    margin-bottom: 28px;
+
+    letter-spacing: 2px;
+}
+
+/* FILTROS */
+.filtros-container{
+    display: flex;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+}
+
+/* INPUT */
+.input-pesquisa{
+    flex: 1;
+
+    min-width: 280px;
+
+    background: #151515;
+
+    border:
+    1px solid rgba(212,175,55,0.12);
+
+    color: white;
+
+    padding: 16px 18px;
+
+    border-radius: 16px;
+
+    font-size: 15px;
+
+    transition: 0.3s;
+}
+
+.input-pesquisa::placeholder{
+    color: #7c7c7c;
+}
+
+.input-pesquisa:focus{
+    outline: none;
+
+    border:
+    1px solid #d4af37;
+
+    box-shadow:
+    0 0 0 4px rgba(212,175,55,0.08);
+}
+
+/* SELECT */
+.select-status{
+    background: #151515;
+
+    border:
+    1px solid rgba(212,175,55,0.12);
+
+    color: #fff;
+
+    padding: 16px 18px;
+
+    border-radius: 16px;
+
+    min-width: 220px;
+
+    font-size: 15px;
+
+    transition: 0.3s;
+
+    cursor: pointer;
+}
+
+.select-status:focus{
+    outline: none;
+
+    border:
+    1px solid #d4af37;
+
+    box-shadow:
+    0 0 0 4px rgba(212,175,55,0.08);
+}
+
+.select-status option{
+    background: #111;
+    color: #fff;
+}
+
+/* GRID */
+.grid-clientes{
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 24px;
+}
+
+/* SEM RESULTADO */
+.nenhum-resultado{
+
+    background: #111;
+
+    border:
+    1px solid rgba(212,175,55,0.10);
+
+    border-radius: 18px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #bcbcbc;
+
+    font-size: 16px;
+}
+
+/* RESPONSIVO */
+@media(max-width: 768px){
+
+    .titulo-clientes{
+        font-size: 36px;
+    }
+
+    .topo-clientes{
+        padding: 22px;
+    }
+
+    .filtros-container{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .select-status{
+        width: 100%;
+    }
+
+}

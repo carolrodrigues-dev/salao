@@ -3,11 +3,15 @@
 }
 
 .btn-cadastro{
-    background-color:#8181F7 ;
-    color: #fff;
+    background: linear-gradient(90deg, #cfa64a, #e6c36a);
+    color: #000;
+    border: none;
+    font-weight: bold;
 }
 
 .btn-cadastro:hover{
-    background-color: #008B8B;
-    color: #fff;
+    opacity: 0.95;
+    transform: scale(1.02);
+    transition: .2s;
+    color: #000;
 }

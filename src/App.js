@@ -11,6 +11,7 @@ import Home from './view/home/';
 import UsuarioRecuperarSenha from './view/usuario-recuperar-senha';
 import ServicoSalao from './view/servico-salao';
 import Detalhes from './view/Salao-detalhes/detalhes';
+import Admin from './pages/admin/admin';
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
             <Route path="/usuariorecuperarsenha" element={<UsuarioRecuperarSenha />} />
             <Route path="/servicosalao" element={<ServicoSalao />} />
             <Route path="/detalhes/:id" element={<Detalhes />} />
-
+            <Route path="/admin" element={<Admin />} />
           </Routes>
 
         </Router>

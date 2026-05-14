@@ -7,6 +7,8 @@ function Navbar() {
 
   const dispatch = useDispatch();
   const usuarioLogado = useSelector(state => state.usuarioLogado);
+  const usuarioEmail = useSelector(state => state.usuarioEmail);
+  const admin = usuarioEmail?.trim().toLowerCase() === 'admin@gmail.com';
 
   return (
     <nav className="navbar navbar-expand-lg">
@@ -42,6 +44,22 @@ function Navbar() {
                   Marcar Horário
                 </Link>
               </li>
+
+              {/* ADMIN */}
+{admin && (
+
+    <li className="nav-item">
+
+        <Link
+            className="nav-link"
+            to="/admin"
+        >
+            Dashboard
+        </Link>
+
+    </li>
+
+)}
 
               {/* SAIR */}
               <li className="nav-item">
