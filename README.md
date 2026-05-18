@@ -12,11 +12,18 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
   <img src="assets/login.png" width="500"/>
 </p>
 
+### Tela de Cadastro de Agendamento
+
+<p align="center">
+  <img src="assets/cadastro.png" width="500"/>
+</p>
+
 ---
 
 ## 📌 Funcionalidades
 
 - 🔐 Sistema de login de usuários  
+- 🆕 Tela de cadastro de usuários  
 - 📅 Agendamento de horários  
 - 🚫 Validação para evitar horários duplicados  
 - 📋 Listagem de agendamentos  
