@@ -1,41 +1,48 @@
-/* FUNDO */
-body{
-    background:
-    radial-gradient(
-        circle at top left,
-        rgba(212,175,55,0.08),
-        transparent 25%
-    ),
+/* =========================
+   FUNDO
+========================= */
+body {
 
-    #0b0b0b;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(212,175,55,0.08),
+            transparent 25%
+        ),
+        #0b0b0b;
 
     min-height: 100vh;
+
+    font-family: Arial, sans-serif;
 }
 
-/* CONTAINER */
-.col-12.mt-5{
+/* =========================
+   CONTAINER PRINCIPAL
+========================= */
+.col-12.mt-5 {
+
     max-width: 950px;
 
     margin: 50px auto;
 
     padding: 40px;
 
-    background:
-    rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.03);
 
-    border:
-    1px solid rgba(212,175,55,0.08);
+    border: 1px solid rgba(212,175,55,0.08);
 
     border-radius: 26px;
 
     backdrop-filter: blur(12px);
 
-    box-shadow:
-    0 15px 40px rgba(0,0,0,0.30);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.30);
 }
 
-/* TÍTULO */
-h3{
+/* =========================
+   TÍTULO
+========================= */
+h3 {
+
     color: #fff;
 
     font-size: 34px;
@@ -44,11 +51,44 @@ h3{
 
     letter-spacing: 1px;
 
-    margin-bottom: 35px;
+    margin-bottom: 18px;
+
+    text-align: center;
 }
 
-/* LABEL */
-label{
+/* =========================
+   SUBTÍTULO
+========================= */
+.subtitulo-formulario{
+
+    text-align: center;
+
+    color: #9b9b9b;
+
+    font-size: 15px;
+
+    margin-top: -5px;
+
+    margin-bottom: 35px;
+
+    letter-spacing: 0.5px;
+
+    width: 100%;
+}
+
+/* =========================
+   FORM GROUP
+========================= */
+.form-group {
+
+    margin-bottom: 22px;
+}
+
+/* =========================
+   LABEL
+========================= */
+label {
+
     color: #d4af37;
 
     font-weight: 600;
@@ -58,12 +98,14 @@ label{
     display: block;
 }
 
-/* INPUTS */
-.form-control{
+/* =========================
+   INPUTS / SELECT / TEXTAREA
+========================= */
+.form-control {
+
     background: #141414 !important;
 
-    border:
-    1px solid rgba(212,175,55,0.12) !important;
+    border: 1px solid rgba(212,175,55,0.12) !important;
 
     color: #fff !important;
 
@@ -73,54 +115,61 @@ label{
 
     min-height: 56px;
 
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 /* TEXTAREA */
-textarea.form-control{
+textarea.form-control {
+
     min-height: 140px;
+
     resize: none;
 }
 
 /* SELECT */
-select.form-control{
+select.form-control {
+
     cursor: pointer;
 }
 
 /* PLACEHOLDER */
-.form-control::placeholder{
+.form-control::placeholder {
+
     color: #777;
 }
 
 /* FOCUS */
-.form-control:focus{
-    box-shadow:
-    0 0 0 4px rgba(212,175,55,0.08) !important;
+.form-control:focus {
 
-    border:
-    1px solid #d4af37 !important;
+    outline: none !important;
+
+    box-shadow:
+        0 0 0 4px rgba(212,175,55,0.08) !important;
+
+    border: 1px solid #d4af37 !important;
 
     background: #181818 !important;
 }
 
-/* INPUT FILE */
-input[type="file"]{
+/* =========================
+   INPUT FILE
+========================= */
+input[type="file"] {
+
     padding: 14px !important;
 }
 
-/* ESPAÇAMENTO */
-.form-group{
-    margin-bottom: 26px;
-}
+/* =========================
+   BOTÃO CADASTRO
+========================= */
+.btn-cadastro {
 
-/* BOTÃO */
-.btn-cadastro{
     background:
-    linear-gradient(
-        90deg,
-        #cfa64a,
-        #f1d77a
-    );
+        linear-gradient(
+            90deg,
+            #cfa64a,
+            #f1d77a
+        );
 
     color: #000;
 
@@ -136,49 +185,204 @@ input[type="file"]{
 
     letter-spacing: 1px;
 
-    transition: 0.3s;
+    transition: 0.3s ease;
+
+    width: 100%;
 }
 
-/* HOVER BOTÃO */
-.btn-cadastro:hover{
-    transform:
-    translateY(-3px);
+/* HOVER */
+.btn-cadastro:hover {
+
+    transform: translateY(-3px);
 
     box-shadow:
-    0 15px 35px rgba(212,175,55,0.18);
-
-    color: #000;
+        0 15px 35px rgba(212,175,55,0.18);
 
     opacity: 0.97;
 }
 
-/* MENSAGEM */
-.msg-login{
+/* =========================
+   MENSAGENS
+========================= */
+.msg-login {
+
     color: white;
 
     font-size: 15px;
 
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
-/* SPINNER */
-.spinner-border{
+.msg-login span {
+
+    display: block;
+
+    padding: 10px;
+}
+
+/* =========================
+   SPINNER
+========================= */
+.spinner-border {
+
     width: 3rem;
+
     height: 3rem;
 }
 
-/* RESPONSIVO */
-@media(max-width: 768px){
+/* =========================
+   FORMULÁRIO
+========================= */
+.formulario-container{
 
-    .col-12.mt-5{
+    position: relative;
+}
+
+/* =========================
+   BOTÃO X
+========================= */
+.btn-fechar-pagina{
+
+    position: absolute;
+
+    top: 28px;
+
+    right: 28px;
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.05);
+
+    color: #fff;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    z-index: 10;
+}
+
+.btn-fechar-pagina:hover{
+
+    background: #d4af37;
+
+    color: #000;
+
+    transform: rotate(90deg);
+}
+
+/* =========================
+   BOTÃO AGENDAR
+========================= */
+.btn-agendar{
+
+    width: 70%;
+
+    display: block;
+
+    height: 54px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d4af37,
+            #f1c85b
+        );
+
+    color: #000;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    margin: 25px auto 0;
+
+    transition: 0.25s ease;
+
+    box-shadow:
+        0 10px 25px rgba(212,175,55,0.18);
+
+    cursor: pointer;
+}
+
+.btn-agendar:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 12px rgba(212,175,55,0.45),
+    0 0 24px rgba(212,175,55,0.25),
+    0 14px 30px rgba(212,175,55,0.28);
+}
+
+.btn-agendar:disabled{
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+/* =========================
+   MENSAGEM SUCESSO
+========================= */
+.msg-sucesso{
+
+    color: #d4af37;
+
+    font-weight: 600;
+
+    margin-top: 12px;
+
+    text-align: center;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 768px) {
+
+    .col-12.mt-5 {
+
         margin: 20px;
 
         padding: 25px;
     }
 
-    h3{
+    h3 {
+
         font-size: 26px;
-        text-align: center;
     }
 
+    .subtitulo-formulario{
+
+        font-size: 13px;
+
+        margin-top: 0;
+    }
+
+    .btn-agendar{
+
+        width: 100%;
+    }
+
+    .btn-fechar-pagina{
+
+        top: 18px;
+
+        right: 18px;
+    }
 }

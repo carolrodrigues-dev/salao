@@ -1,32 +1,53 @@
 /* NAVBAR */
 .navbar{
+
     position: sticky;
+
     top: 0;
+
     z-index: 999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
 
     padding: 18px 30px;
 
     background:
-    rgba(15,15,15,0.75);
+    rgba(15,15,15,0.88);
 
     backdrop-filter: blur(14px);
 
     border-bottom:
-    1px solid rgba(212,175,55,0.12);
+    1px solid rgba(212,175,55,0.10);
 
     box-shadow:
     0 8px 30px rgba(0,0,0,0.25);
 }
 
-/* CONTAINER NAV */
-.navbar-nav{
+/* ESQUERDA */
+.navbar-esquerda{
+
     display: flex;
+
     align-items: center;
+}
+
+/* NAV */
+.navbar-nav{
+
+    display: flex;
+
+    align-items: center;
+
     gap: 10px;
 }
 
 /* LINKS */
 .nav-item a{
+
     color: #f5f5f5;
 
     font-weight: 600;
@@ -38,10 +59,13 @@
     transition: 0.3s ease;
 
     position: relative;
+
+    text-decoration: none;
 }
 
 /* HOVER */
 .nav-item a:hover{
+
     color: #d4af37;
 
     background:
@@ -50,8 +74,9 @@
     transform: translateY(-1px);
 }
 
-/* LINK ATIVO */
+/* LINHA */
 .nav-item a::after{
+
     content: '';
 
     position: absolute;
@@ -60,6 +85,7 @@
     bottom: 6px;
 
     width: 0%;
+
     height: 2px;
 
     background: #d4af37;
@@ -68,40 +94,98 @@
 }
 
 .nav-item a:hover::after{
+
     width: calc(100% - 30px);
 }
 
 /* BOTÃO MOBILE */
 .navbar-toggler{
-    border: 1px solid rgba(212,175,55,0.2);
+
+    border:
+    1px solid rgba(212,175,55,0.2);
 
     padding: 10px 14px;
 
     border-radius: 12px;
 
-    background: rgba(255,255,255,0.03);
+    background:
+    rgba(255,255,255,0.03);
 }
 
 /* ÍCONE */
 .navbar-toggler i{
+
     color: #fff;
+
     font-size: 18px;
 }
+
+/* LOGO */
+.logo-navbar{
+color: #f1d77a !important;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+    text-shadow:
+    0 0 12px rgba(212,175,55,0.35);
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    padding: 0 !important;
+
+    margin-left: auto;
+}
+    
 
 /* RESPONSIVO */
 @media(max-width: 991px){
 
     .navbar{
+
         padding: 18px 20px;
     }
 
     .navbar-nav{
+
         margin-top: 20px;
+
         gap: 6px;
     }
 
     .nav-item a{
+
         display: block;
+    }
+
+}
+
+/* RESPONSIVO MOBILE */
+@media(max-width: 768px){
+
+    .navbar{
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        align-items: flex-start;
+    }
+
+    .logo-navbar{
+
+        margin-left: 0;
     }
 
 }

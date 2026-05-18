@@ -1,489 +1,408 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import './servico-salao.css';
-
 import Navbar from '../../components/navbar/';
-
 import firebase from '../../config/firebase';
 
 function ServicoSalao() {
 
-    const [carregando, setCarregando] = useState();
+    const [carregando, setCarregando] = useState(false);
     const [msgTipo, setMsgTipo] = useState();
 
-    const [cliente, setCliente] = useState();
-    const [tipo, setTipo] = useState();
-    const [detalhes, setDetalhes] = useState();
-    const [profissional, setProfissional] = useState();
-    const [data, setData] = useState();
-    const [hora, setHora] = useState();
-    const [telefone, setTelefone] = useState();
+    const [cliente, setCliente] = useState('');
+    const [tipo, setTipo] = useState('');
+    const [valor, setValor] = useState(0);
+    const [detalhes, setDetalhes] = useState('');
+    const [profissional, setProfissional] = useState('');
+    const [data, setData] = useState('');
+    const [hora, setHora] = useState('');
+    const [telefone, setTelefone] = useState('');
 
     const [fotoAtual, setFotoAtual] = useState();
     const [fotoNova, setFotoNova] = useState();
 
-    const usuarioEmail = useSelector(
-        state => state.usuarioEmail
-    );
+    const usuarioEmail = useSelector(state => state.usuarioEmail);
 
     const { id } = useParams();
+
+    const navigate = useNavigate();
 
     const storage = firebase.storage();
     const db = firebase.firestore();
 
+    /* SERVIÇOS */
+    const servicos = [
+
+        {
+            nome: "Corte masculino",
+            valor: 30,
+            profissional: "Rafael Costa"
+        },
+
+        {
+            nome: "Corte infantil",
+            valor: 25,
+            profissional: "Thiago Almeida"
+        },
+
+        {
+            nome: "Corte degradê (fade)",
+            valor: 40,
+            profissional: "Bruno Henrique"
+        },
+
+        {
+            nome: "Corte tesoura",
+            valor: 35,
+            profissional: "Rafael Costa"
+        },
+
+        {
+            nome: "Barba simples",
+            valor: 20,
+            profissional: "Thiago Almeida"
+        },
+
+        {
+            nome: "Barba completa",
+            valor: 30,
+            profissional: "Bruno Henrique"
+        },
+
+        {
+            nome: "Design de barba",
+            valor: 25,
+            profissional: "Rafael Costa"
+        },
+
+        {
+            nome: "Sobrancelha na navalha",
+            valor: 15,
+            profissional: "Thiago Almeida"
+        },
+
+        {
+            nome: "Limpeza de pele",
+            valor: 50,
+            profissional: "Bruno Henrique"
+        }
+
+    ];
+
     useEffect(() => {
 
-        if(id){
+        if (id) {
 
-            firebase
-            .firestore()
-            .collection('salao')
-            .doc(id)
-            .get()
+            firebase.firestore()
+                .collection('salao')
+                .doc(id)
+                .get()
 
-            .then(resultado => {
+                .then(resultado => {
 
-                setCliente(resultado.data().cliente);
-                setTipo(resultado.data().tipo);
-                setDetalhes(resultado.data().detalhes);
-                setProfissional(resultado.data().profissional);
-                setData(resultado.data().data);
-                setHora(resultado.data().hora);
-                setTelefone(resultado.data().telefone);
+                    const doc = resultado.data();
 
-                setFotoAtual(resultado.data().foto);
+                    setCliente(doc.cliente || '');
+                    setTipo(doc.tipo || '');
+                    setValor(Number(doc.valor) || 0);
+                    setDetalhes(doc.detalhes || '');
+                    setProfissional(doc.profissional || '');
+                    setData(doc.data || '');
+                    setHora(doc.hora || '');
+                    setTelefone(doc.telefone || '');
+                    setFotoAtual(doc.foto || null);
 
-            });
+                });
 
         }
 
-    }, [carregando, id]);
+    }, [id]);
 
     /* ATUALIZAR */
     function atualizar() {
 
         setMsgTipo(null);
-        setCarregando(1);
+        setCarregando(true);
 
-        if(fotoNova){
+        const atualizarFirestore = () => {
 
-            storage
-            .ref(`imagens/${fotoNova.name}`)
-            .put(fotoNova);
+            db.collection('salao')
+                .doc(id)
+                .update({
+
+                    cliente,
+                    tipo,
+                    valor: Number(valor),
+                    detalhes,
+                    data,
+                    hora,
+                    profissional,
+                    telefone,
+                    foto: fotoNova ? fotoNova.name : fotoAtual
+
+                })
+                .then(() => {
+
+                    setMsgTipo('sucesso');
+                    setCarregando(false);
+
+                })
+                .catch(() => {
+
+                    setMsgTipo('erro');
+                    setCarregando(false);
+
+                });
+
+        };
+
+        if (fotoNova) {
+
+            storage.ref(`imagens/${fotoNova.name}`)
+                .put(fotoNova)
+                .then(() => atualizarFirestore());
+
+        } else {
+
+            atualizarFirestore();
 
         }
-
-        db.collection('salao')
-        .doc(id)
-
-        .update({
-
-            cliente: cliente,
-
-            tipo: tipo,
-
-            detalhes: detalhes,
-
-            data: data,
-
-            hora: hora,
-
-            profissional: profissional,
-
-            telefone: telefone,
-
-            foto: fotoNova
-            ? fotoNova.name
-            : fotoAtual
-
-        })
-
-        .then(() => {
-
-            setMsgTipo('sucesso');
-            setCarregando(0);
-
-        })
-
-        .catch(() => {
-
-            setMsgTipo('erro');
-            setCarregando(0);
-
-        });
-
     }
 
     /* CADASTRAR */
-    function cadastrar() {
+    async function cadastrar() {
 
         setMsgTipo(null);
 
-        /* VALIDAR FOTO */
-        if(!fotoNova){
+        if (!cliente || !tipo || !profissional || !data || !hora) {
 
             setMsgTipo('erro');
             return;
 
         }
 
-        setCarregando(1);
+        setCarregando(true);
 
-        storage
-        .ref(`imagens/${fotoNova.name}`)
-        .put(fotoNova)
+        try {
 
-        .then(() => {
+            /* UPLOAD FOTO */
+            if (fotoNova) {
 
-            db.collection('salao')
+                await storage
+                    .ref(`imagens/${fotoNova.name}`)
+                    .put(fotoNova);
 
-            .add({
+            }
 
-                cliente: cliente,
+            /* SALVAR FIREBASE */
+            await db.collection('salao').add({
 
-                tipo: tipo,
+                cliente,
+                tipo,
+                valor: Number(valor),
+                detalhes,
+                data,
+                hora,
+                profissional,
+                telefone,
 
-                detalhes: detalhes,
-
-                data: data,
-
-                hora: hora,
-
-                profissional: profissional,
-
-                telefone: telefone,
-
-                foto: fotoNova.name,
+                foto: fotoNova ? fotoNova.name : null,
 
                 usuario: usuarioEmail,
-
                 visualizacoes: 0,
-
                 publico: 1,
-
                 criacao: new Date(),
-
                 status: 'Pendente'
-
-            })
-
-            .then(() => {
-
-                setMsgTipo('sucesso');
-                setCarregando(0);
-
-            })
-
-            .catch(() => {
-
-                setMsgTipo('erro');
-                setCarregando(0);
 
             });
 
-        });
+            setMsgTipo('sucesso');
 
+        } catch (error) {
+
+            console.log(error);
+
+            setMsgTipo('erro');
+
+        } finally {
+
+            setCarregando(false);
+
+        }
     }
 
     return (
 
         <>
+            <Navbar />
 
-        <Navbar />
+            <div className='col-12 mt-5 formulario-container'>
 
-        <div className='col-12 mt-5'>
+                {/* BOTÃO FECHAR */}
+                <button
+                    className='btn-fechar-pagina'
+                    onClick={() => navigate('/home')}
+                >
+                    ✕
+                </button>
 
-            <div className='row'>
-
-                <h3 className='mx-auto font-weigth-bold'>
-
-                    {id
-                    ? 'ATUALIZAR SERVIÇO'
-                    : 'AGENDAR HORARIO'}
-
-                </h3>
-
-                <i className="bi bi-clock"></i>
-
-            </div>
-
-            <form>
-
-                {/* CLIENTE */}
-                <div className='form-group'>
-
-                    <label>Cliente</label>
-
-                    <input
-                        onChange={(e) =>
-                            setCliente(e.target.value)
-                        }
-
-                        type='text'
-
-                        className='form-control'
-
-                        value={cliente && cliente}
-                    />
-
-                </div>
-
-                {/* TELEFONE */}
-                <div className='form-group'>
-
-                    <label>Telefone</label>
-
-                    <input
-                        onChange={(e) =>
-                            setTelefone(e.target.value)
-                        }
-
-                        type='text'
-
-                        className='form-control'
-
-                        value={telefone && telefone}
-                    />
-
-                </div>
-
-
-
-
-
-                {/* SERVIÇO */}
-                <div className='form-group'>
-
-                    <label>Tipo do serviço</label>
-
-                    <select
-                        onChange={(e) =>
-                            setTipo(e.target.value)
-                        }
-
-                        className='form-control'
-
-                        value={tipo && tipo}
-                    >
-
-                        <option disabled selected value>
-                            -- Selecione um serviço --
-                        </option>
-
-                        <option>Corte de Cabelo</option>
-                        <option>Tintura</option>
-                        <option>Tratamento capilar</option>
-                        <option>Alisamento</option>
-                        <option>Progressiva</option>
-                        <option>Mechas</option>
-                        <option>Luzes</option>
-                        <option>Reflexos</option>
-                        <option>Manicure</option>
-                        <option>Pedicure</option>
-                        <option>Manicure e Pedicure</option>
-
-                    </select>
-
-                </div>
-
-                {/* DESCRIÇÃO */}
-                <div className='form-group'>
-
-                    <label>Descrição do serviço:</label>
-
-                    <textarea
-                        onChange={(e) =>
-                            setDetalhes(e.target.value)
-                        }
-
-                        className='form-control'
-
-                        rows="3"
-
-                        value={detalhes && detalhes}
-                    />
-
-                </div>
-
-                {/* PROFISSIONAL */}
-                <div className='form-group'>
-
-                    <label>Profissional</label>
-
-                    <select
-                        onChange={(e) =>
-                            setProfissional(e.target.value)
-                        }
-
-                        className='form-control'
-
-                        value={profissional && profissional}
-                    >
-
-                        <option disabled selected value>
-                            -- Selecione um profissional --
-                        </option>
-
-                        <option>Romeu Felipe</option>
-                        <option>Letícia Rigolim</option>
-                        <option>Washington Nunnes</option>
-                        <option>Charlem Strelow</option>
-                        <option>Sônia Lopes</option>
-
-                    </select>
-
-                </div>
-
-                {/* DATA */}
-                <div className='form-group row'>
-
-                    <div className='col-3'>
-
-                        <label>Data:</label>
-
-                        <input
-                            onChange={(e) =>
-                                setData(e.target.value)
-                            }
-
-                            type='date'
-
-                            className='form-control'
-
-                            value={data && data}
-                        />
-
-                    </div>
-
-                </div>
-
-                {/* HORA */}
-                <div className='form-group row'>
-
-                    <div className='col-3'>
-
-                        <label>Hora:</label>
-
-                        <input
-                            onChange={(e) =>
-                                setHora(e.target.value)
-                            }
-
-                            type='time'
-
-                            className='form-control'
-
-                            value={hora && hora}
-                        />
-
-                    </div>
-
-                </div>
-
-                {/* FOTO */}
-                <div className='form-group'>
-
-                    <label>
-
-                        Upload da foto
-
-                        {id
-                        ? ' (Se quiser manter a mesma foto não precisa escolher um novo arquivo)'
-                        : null}
-
-                    </label>
-
-                    <input
-                        onChange={(e) =>
-                            setFotoNova(e.target.files[0])
-                        }
-
-                        type='file'
-
-                        className='form-control'
-                    />
-
-                </div>
-
-                {/* BOTÃO */}
                 <div className='row'>
 
-                    {
+                    <h3 className='mx-auto font-weigth-bold'>
 
-                    carregando > 0
-
-                    ? (
-
-                        <div
-                            className="spinner-border text-success mx-auto"
-                            role="status"
-                        >
-
-                            <span className="sr-only">
-                                Loading...
-                            </span>
-
-                        </div>
-
-                    )
-
-                    : (
-
-                        <button
-                            onClick={
-                                id
-                                ? atualizar
-                                : cadastrar
-                            }
-
-                            type='button'
-
-                            className='btn btn-lg btn-block mt-3 mb-5 btn-cadastro'
-                        >
-
-                            {id
+                        {id
                             ? 'ATUALIZAR SERVIÇO'
-                            : 'AGENDAR SERVIÇO'}
+                            : 'AGENDAR HORARIO'}
 
-                        </button>
+                    </h3>
 
-                    )
-
-                    }
+                <p className='subtitulo-formulario'>
+                Sistema inteligente de agendamento para barbearias
+                </p>
 
                 </div>
 
-            </form>
+                <form>
 
-            {/* MENSAGENS */}
-            <div className="msg-login texte-white text-center mt-2">
+                    {/* CLIENTE */}
+                    <input
+                        value={cliente}
+                        onChange={e =>
+                            setCliente(e.target.value)
+                        }
+                        className='form-control'
+                        placeholder='Cliente'
+                    />
+
+                    {/* TELEFONE */}
+                    <input
+                        value={telefone}
+                        onChange={e =>
+                            setTelefone(e.target.value)
+                        }
+                        className='form-control mt-2'
+                        placeholder='Telefone'
+                    />
+
+                    {/* SERVIÇO */}
+                    <select
+                        value={tipo}
+                        onChange={(e) => {
+
+                            const servicoSelecionado =
+                                servicos.find(
+                                    s => s.nome === e.target.value
+                                );
+
+                            setTipo(e.target.value);
+
+                            setValor(
+                                Number(servicoSelecionado?.valor) || 0
+                            );
+
+                            setProfissional(
+                                servicoSelecionado?.profissional || ''
+                            );
+
+                        }}
+                        className='form-control mt-2'
+                    >
+
+                        <option value="">
+                            Selecione um serviço
+                        </option>
+
+                        {servicos.map((s, i) => (
+
+                            <option
+                                key={i}
+                                value={s.nome}
+                            >
+                                {s.nome}
+                            </option>
+
+                        ))}
+
+                    </select>
+
+                    {/* VALOR */}
+                    <input
+                        value={
+                            valor
+                                ? Number(valor).toFixed(2)
+                                : '0.00'
+                        }
+                        readOnly
+                        className='form-control mt-2'
+                        placeholder='Valor'
+                    />
+
+                    {/* PROFISSIONAL */}
+                    <input
+                        value={profissional}
+                        readOnly
+                        className='form-control mt-2'
+                        placeholder='Profissional'
+                    />
+
+                    {/* DATA */}
+                    <input
+                        type='date'
+                        value={data}
+                        onChange={e =>
+                            setData(e.target.value)
+                        }
+                        className='form-control mt-2'
+                    />
+
+                    {/* HORA */}
+                    <input
+                        type='time'
+                        value={hora}
+                        onChange={e =>
+                            setHora(e.target.value)
+                        }
+                        className='form-control mt-2'
+                    />
+
+                    {/* BOTÃO */}
+                    <button
+                        type='button'
+                        className='btn-agendar mt-3'
+                        onClick={id ? atualizar : cadastrar}
+                        disabled={carregando}
+                    >
+
+                        {carregando
+                            ? 'Salvando...'
+                            : id
+                            ? 'Atualizar'
+                            : 'Agendar'}
+
+                    </button>
+
+                </form>
 
                 {msgTipo === 'sucesso' && (
 
-                    <span>
-    
-                        Horario Marcado
-                    </span>
+                    <p className='msg-sucesso mt-2'>
+                    Horário salvo com sucesso!
+                    </p>
 
                 )}
 
                 {msgTipo === 'erro' && (
 
-                    <span>
-                        <strong>Ops!</strong>
-                        Preencha todos os campos e selecione uma foto.
-                    </span>
+                    <p className='text-danger mt-2'>
+                        Preencha todos os campos obrigatórios!
+                    </p>
 
                 )}
 
             </div>
-
-        </div>
-
         </>
-
     );
 }
 

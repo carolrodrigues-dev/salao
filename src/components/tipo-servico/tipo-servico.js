@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import './tipo-servico.css';
 
 function TipoServico({
-
     id,
     cliente,
+    telefone,
+    valor,
     descricao,
-    servico,
     tipo,
     profissional,
     data,
@@ -14,246 +14,302 @@ function TipoServico({
     detalhes,
     visualizacoes,
     status,
-    foto
-
+    foto,
+    isAdmin,
+    onDelete
 }) {
 
     const [modalAberto, setModalAberto] = useState(false);
+    const [statusAtual, setStatusAtual] = useState(status || 'Pendente');
 
-    const [statusAtual, setStatusAtual] = useState(
-        status || 'Pendente'
-    );
+    /* FORMATAR DATA */
+    const formatarData = (valorData) => {
 
-    const formatarData = (valor) => {
+        if (!valorData) return '';
 
-        if (!valor) return '';
-
-        if (valor?.seconds) {
+        if (valorData?.seconds) {
 
             return new Date(
-                valor.seconds * 1000
+                valorData.seconds * 1000
             ).toLocaleDateString('pt-BR');
 
         }
 
-        if (valor?.toDate) {
+        if (valorData?.toDate) {
 
-            return valor
+            return valorData
             .toDate()
             .toLocaleDateString('pt-BR');
 
         }
 
-        return valor;
+        return new Date(valorData)
+        .toLocaleDateString('pt-BR');
+
     };
 
-    /* STATUS */
+    /* STATUS CLASSE */
     const classeStatus = () => {
 
-        if(statusAtual === 'Confirmado'){
+        if (statusAtual === 'Confirmado')
             return 'status-confirmado';
-        }
 
-        if(statusAtual === 'Cancelado'){
+        if (statusAtual === 'Cancelado')
             return 'status-cancelado';
-        }
 
         return 'status-pendente';
     };
 
-    /* TEXTO STATUS */
+    /* STATUS TEXTO */
     const textoStatus = () => {
 
-        if(statusAtual === 'Confirmado'){
+        if (statusAtual === 'Confirmado')
             return '🟢 Confirmado';
-        }
 
-        if(statusAtual === 'Cancelado'){
+        if (statusAtual === 'Cancelado')
             return '🔴 Cancelado';
-        }
 
         return '🟡 Pendente';
     };
 
-    /* INICIAL */
     const inicialCliente = cliente
-    ? cliente.charAt(0).toUpperCase()
-    : '?';
+        ? cliente.charAt(0).toUpperCase()
+        : '?';
+
+    const handleExcluir = () => {
+
+        const confirmar = window.confirm(
+            'Tem certeza que deseja excluir este agendamento?'
+        );
+
+        if (confirmar && onDelete) {
+            onDelete(id);
+        }
+    };
+
+    /* VALOR */
+    const valorFormatado =
+        valor !== undefined && valor !== null
+            ? `R$ ${Number(valor).toFixed(2)}`
+            : 'R$ 0.00';
 
     return (
-
         <>
 
-        <div className='card-servico'>
+            <div className='card-servico'>
 
-            <div className='conteudo'>
+                <div className='conteudo'>
 
-                {/* AVATAR */}
-                <div className='avatar-container'>
+                    {/* AVATAR */}
+                    <div className='avatar-container'>
 
-                    {foto ? (
+                        {foto ? (
 
-                        <img
-                            src={foto}
-                            alt={cliente}
-                            className='avatar-img'
-                        />
+                            <img
+                                src={foto}
+                                alt={cliente}
+                                className='avatar-img'
+                                onError={(e) => {
 
-                    ) : (
+                                    e.target.style.display = 'none';
 
-                        <div className='avatar-fallback'>
+                                    e.target.nextSibling.style.display = 'flex';
+
+                                }}
+                            />
+
+                        ) : null}
+
+                        <div
+                            className='avatar-fallback'
+                            style={{
+                                display: foto ? 'none' : 'flex'
+                            }}
+                        >
                             {inicialCliente}
                         </div>
 
-                    )}
+                    </div>
+
+                    {/* INFO */}
+                    <div className='info-esquerda'>
+
+                        <div className='topo-card'>
+
+                            <h3 className='nome-cliente'>
+                                {cliente}
+                            </h3>
+
+                            <span
+                                className={`status-servico ${classeStatus()}`}
+                            >
+                                {textoStatus()}
+                            </span>
+
+                        </div>
+
+                        <p className='descricao'>
+                            {descricao}
+                        </p>
+
+                        <p className='observacao-card'>
+                            {detalhes}
+                        </p>
+
+                        <div className='info'>
+
+                            <span>
+                                <i className="fas fa-user"></i>
+                                {profissional}
+                            </span>
+
+                            <span>
+                                <i className="fas fa-calendar-alt"></i>
+                                {formatarData(data)}
+                            </span>
+
+                            <span>
+                                <i className="fas fa-clock"></i>
+                                {hora}
+                            </span>
+
+                            <span>
+                                <i className="fas fa-phone"></i>
+                                {telefone || '(31) 9****-9999'}
+                            </span>
+
+                            <span>
+                                <i className="fas fa-dollar-sign"></i>
+                                {valorFormatado}
+                            </span>
+
+                        </div>
+
+                        <div className='rodape-card'>
+
+                            <button
+                                className='btn-detalhes'
+                                onClick={() =>
+                                    setModalAberto(true)
+                                }
+                            >
+                                Ver detalhes
+                            </button>
+
+                            <div className='lado-info'>
+
+                                <span className='tipo'>
+                                    {tipo}
+                                </span>
+
+                                <span className='views'>
+                                    👁 {visualizacoes || 0}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-                {/* DIREITA */}
-                <div className='info-esquerda'>
+            </div>
 
-                    <div className='topo-card'>
+            {/* MODAL */}
+            {modalAberto && (
 
-                        <h3 className='nome-cliente'>
-                            {cliente}
-                        </h3>
+                <div className='overlay-modal'>
 
-                        <span
-                            className={`status-servico ${classeStatus()}`}
-                        >
-                            {textoStatus()}
-                        </span>
-
-                    </div>
-
-                    <p className='descricao'>
-                        {descricao}
-                    </p>
-
-                    <div className='info'>
-
-                        <span>
-                            <i className="fas fa-user"></i>
-                            {profissional}
-                        </span>
-
-                        <span>
-                            <i className="fas fa-calendar-alt"></i>
-                            {formatarData(data)}
-                        </span>
-
-                        <span>
-                            <i className="fas fa-clock"></i>
-                            {hora}
-                        </span>
-
-                    </div>
-
-                    <div className='rodape-card'>
+                    <div className='modal-detalhes'>
 
                         <button
-                            className='btn-detalhes'
+                            className='fechar-modal'
                             onClick={() =>
-                                setModalAberto(true)
+                                setModalAberto(false)
                             }
                         >
-                            Ver detalhes
+                            ✕
                         </button>
 
-                        <div className='lado-info'>
+                        <h2 className='titulo-modal'>
+                            {cliente}
+                        </h2>
 
-                            <span className='tipo'>
-                                {tipo}
-                            </span>
+                        <div className='modal-conteudo'>
 
-                            <span className='views'>
-                                👁 {visualizacoes}
-                            </span>
+                            <div className='item-modal'>
+                                <span>Serviço</span>
+                                <strong>{tipo}</strong>
+                            </div>
 
-                        </div>
+                            <div className='item-modal'>
+                                <span>Profissional</span>
+                                <strong>{profissional}</strong>
+                            </div>
 
-                    </div>
+                            <div className='item-modal'>
+                                <span>Data</span>
+                                <strong>
+                                    {formatarData(data)}
+                                </strong>
+                            </div>
 
-                </div>
+                            <div className='item-modal'>
+                                <span>Hora</span>
+                                <strong>{hora}</strong>
+                            </div>
 
-            </div>
+                            <div className='item-modal'>
+                                <span>Status</span>
+                                <strong>{statusAtual}</strong>
+                            </div>
 
-        </div>
+                            <div className='item-modal'>
+                                <span>Telefone</span>
 
-        {/* MODAL */}
-        {
+                                <strong>
+                                    {telefone || '(31) 99999-9999'}
+                                </strong>
+                            </div>
 
-        modalAberto && (
+                            <div className='item-modal'>
+                                <span>Valor</span>
+                                <strong>{valorFormatado}</strong>
+                            </div>
 
-            <div className='overlay-modal'>
+                            <div className='item-modal descricao-modal'>
 
-                <div className='modal-detalhes'>
+                                <span>Detalhes</span>
 
-                    <button
-                        className='fechar-modal'
-                        onClick={() =>
-                            setModalAberto(false)
-                        }
-                    >
-                        ✕
-                    </button>
+                                <p>{detalhes}</p>
 
-                    <h2 className='titulo-modal'>
-                        {cliente}
-                    </h2>
+                            </div>
 
-                    <div className='modal-conteudo'>
+                            {/* AÇÕES */}
+                            <div className='acoes-modal'>
 
-                        <div className='item-modal'>
-                            <span>Serviço</span>
-                            <strong>{tipo}</strong>
-                        </div>
+                                <button
+                                    className='btn-cancelar'
+                                    onClick={() =>
+                                        setStatusAtual('Cancelado')
+                                    }
+                                >
+                                    Cancelar horário
+                                </button>
 
-                        <div className='item-modal'>
-                            <span>Profissional</span>
-                            <strong>{profissional}</strong>
-                        </div>
+                                {isAdmin && (
 
-                        <div className='item-modal'>
-                            <span>Data</span>
-                            <strong>{formatarData(data)}</strong>
-                        </div>
+                                    <button
+                                        className='btn-excluir'
+                                        onClick={handleExcluir}
+                                    >
+                                        Excluir agendamento
+                                    </button>
 
-                        <div className='item-modal'>
-                            <span>Hora</span>
-                            <strong>{hora}</strong>
-                        </div>
+                                )}
 
-                        <div className='item-modal'>
-                            <span>Status</span>
-                            <strong>{statusAtual}</strong>
-                        </div>
-
-                        <div className='item-modal descricao-modal'>
-                            <span>Detalhes</span>
-                            <p>{detalhes}</p>
-                        </div>
-
-                        {/* BOTÕES */}
-                        <div className='acoes-modal'>
-
-                            <button
-                                className='btn-confirmar'
-                                onClick={() =>
-                                    setStatusAtual('Confirmado')
-                                }
-                            >
-                                Confirmar horário
-                            </button>
-
-                            <button
-                                className='btn-cancelar'
-                                onClick={() =>
-                                    setStatusAtual('Cancelado')
-                                }
-                            >
-                                Cancelar horário
-                            </button>
+                            </div>
 
                         </div>
 
@@ -261,11 +317,7 @@ function TipoServico({
 
                 </div>
 
-            </div>
-
-        )
-
-        }
+            )}
 
         </>
     );
