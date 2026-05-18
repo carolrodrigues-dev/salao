@@ -12,7 +12,7 @@ Este projeto √© um sistema web desenvolvido para facilitar o agendamento de hor√
   <img src="assets/login.png" width="500"/>
 </p>
 
-### Tela de Cadastro
+### Tela de Cadastro de Agendamento
 
 <p align="center">
   <img src="assets/cadastro.png" width="500"/>
