@@ -10,30 +10,36 @@ import {
     YAxis,
     Tooltip,
     Legend,
-    ResponsiveContainer
+    ResponsiveContainer,
+    Cell
 } from 'recharts';
 
+import { useNavigate } from 'react-router-dom';
+
 function Admin() {
+
+    const navigate = useNavigate();
 
     const [total, setTotal] = useState(0);
     const [confirmados, setConfirmados] = useState(0);
     const [pendentes, setPendentes] = useState(0);
     const [cancelados, setCancelados] = useState(0);
     const [agendamentos, setAgendamentos] = useState([]);
+    const [finalizados, setFinalizados] = useState(0);
 
     useEffect(() => {
 
-        firebase
-            .firestore()
+        firebase.firestore()
             .collection('salao')
             .get()
-
             .then((resultado) => {
 
                 let totalAgendamentos = 0;
                 let totalConfirmados = 0;
                 let totalPendentes = 0;
                 let totalCancelados = 0;
+                let totalFinalizados = 0;
+
                 let lista = [];
 
                 resultado.docs.forEach(doc => {
@@ -50,6 +56,7 @@ function Admin() {
                     if (item.status === 'Confirmado') totalConfirmados++;
                     if (item.status === 'Pendente') totalPendentes++;
                     if (item.status === 'Cancelado') totalCancelados++;
+                    if (item.status === 'Finalizado') totalFinalizados++;
 
                 });
 
@@ -58,67 +65,92 @@ function Admin() {
                 setPendentes(totalPendentes);
                 setCancelados(totalCancelados);
                 setAgendamentos(lista);
+                setFinalizados(totalFinalizados);
 
             });
 
     }, []);
 
-    // 📊 DADOS DO GRÁFICO
     const dadosGrafico = [
-        { status: 'Confirmados', quantidade: confirmados },
-        { status: 'Pendentes', quantidade: pendentes },
-        { status: 'Cancelados', quantidade: cancelados }
-    ];
+    { status: 'Confirmados', quantidade: confirmados },
+    { status: 'Pendentes', quantidade: pendentes },
+    { status: 'Cancelados', quantidade: cancelados },
+    { status: 'Finalizados', quantidade: finalizados }
+];
 
-    // 🟢 CONFIRMAR
+    // CONFIRMAR
     async function confirmarAgendamento(id) {
 
-        try {
-            await firebase
-                .firestore()
-                .collection('salao')
-                .doc(id)
-                .update({
-                    status: 'Confirmado'
-                });
+        await firebase.firestore()
+            .collection('salao')
+            .doc(id)
+            .update({ status: 'Confirmado' });
 
-            setAgendamentos(prev =>
-                prev.map(item =>
-                    item.id === id
-                        ? { ...item, status: 'Confirmado' }
-                        : item
-                )
-            );
-
-            setConfirmados(prev => prev + 1);
-            setPendentes(prev => prev - 1);
-
-        } catch (error) {
-            console.log(error);
-        }
+        setAgendamentos(prev =>
+            prev.map(item =>
+                item.id === id
+                    ? { ...item, status: 'Confirmado' }
+                    : item
+            )
+        );
     }
 
-    // 🗑️ EXCLUIR
+    // CANCELAR
+    async function cancelarAgendamento(id) {
+
+        await firebase.firestore()
+            .collection('salao')
+            .doc(id)
+            .update({ status: 'Cancelado' });
+
+        setAgendamentos(prev =>
+            prev.map(item =>
+                item.id === id
+                    ? { ...item, status: 'Cancelado' }
+                    : item
+            )
+        );
+    }
+
+    // FINALIZAR ✔ NOVO
+    async function finalizarAgendamento(id) {
+
+        await firebase.firestore()
+            .collection('salao')
+            .doc(id)
+            .update({ status: 'Finalizado' });
+
+        setAgendamentos(prev =>
+            prev.map(item =>
+                item.id === id
+                    ? { ...item, status: 'Finalizado' }
+                    : item
+            )
+        );
+    }
+
+    // EXCLUIR
     async function excluirAgendamento(id) {
 
         if (!window.confirm('Tem certeza que deseja excluir?')) return;
 
-        try {
-            await firebase
-                .firestore()
-                .collection('salao')
-                .doc(id)
-                .delete();
+        await firebase.firestore()
+            .collection('salao')
+            .doc(id)
+            .delete();
 
-            setAgendamentos(prev =>
-                prev.filter(item => item.id !== id)
-            );
+        setAgendamentos(prev =>
+            prev.filter(item => item.id !== id)
+        );
+    }
 
-            setTotal(prev => prev - 1);
+    // EDITAR
+    function editarAgendamento(id) {
+        navigate(`/editar/${id}`);
+    }
 
-        } catch (error) {
-            console.log(error);
-        }
+    function abrirCadastroProfissionais() {
+        navigate('/profissionais');
     }
 
     return (
@@ -128,123 +160,150 @@ function Admin() {
 
             <div className='admin-container'>
 
-                <h1 className='titulo-admin'>Dashboard Admin</h1>
+                <div className='topo-admin'>
+                    <h1 className='titulo-admin'>Dashboard Admin</h1>
+
+                    <button
+                        className='btn-admin-topo'
+                        onClick={abrirCadastroProfissionais}
+                    >
+                        + Cadastrar Profissional
+                    </button>
+                </div>
 
                 {/* CARDS */}
                 <div className='cards-admin'>
-
-                    <div className='card-admin'>
-                        <h2>Total</h2>
-                        <span>{total}</span>
-                    </div>
-
-                    <div className='card-admin'>
-                        <h2>Confirmados</h2>
-                        <span>{confirmados}</span>
-                    </div>
-
-                    <div className='card-admin'>
-                        <h2>Pendentes</h2>
-                        <span>{pendentes}</span>
-                    </div>
-
-                    <div className='card-admin'>
-                        <h2>Cancelados</h2>
-                        <span>{cancelados}</span>
-                    </div>
-
+                    <div className='card-admin'><h2>Total</h2><span>{total}</span></div>
+                    <div className='card-admin'><h2>Confirmados</h2><span>{confirmados}</span></div>
+                    <div className='card-admin'><h2>Pendentes</h2><span>{pendentes}</span></div>
+                    <div className='card-admin'><h2>Cancelados</h2><span>{cancelados}</span></div>
+                    <div className='card-admin'><h2>Finalizados</h2><span>{finalizados}</span></div>
                 </div>
 
-                {/* 📊 GRÁFICO DE BARRAS */}
-                <div className='lista-agendamentos'>
+               {/* GRÁFICO */}
+<div className="grafico-admin">
 
-                    <h2 className='subtitulo-admin'>
-                        Gráfico de Status dos Agendamentos
-                    </h2>
+    <h2>Resumo dos Agendamentos</h2>
 
-                    <div style={{ width: '100%', height: 300 }}>
+    <ResponsiveContainer
+        width="100%"
+        height={300}
+    >
 
-                        <ResponsiveContainer>
-                            <BarChart data={dadosGrafico}>
+        <BarChart data={dadosGrafico}>
 
-                                <XAxis dataKey="status" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
+            <XAxis dataKey="status" />
 
-                                <Bar
-                                    dataKey="quantidade"
-                                    fill="#d4af37"
-                                />
+            <YAxis />
 
-                            </BarChart>
-                        </ResponsiveContainer>
+            <Tooltip />
 
-                    </div>
+            <Legend />
 
-                </div>
+            <Bar
+                dataKey="quantidade"
+                name="Agendamentos"
+            >
+
+                {dadosGrafico.map((entry, index) => {
+
+                    let cor = '#d4af37';
+
+                    if (entry.status === 'Confirmados')
+                        cor = '#2ecc71';
+
+                    if (entry.status === 'Pendentes')
+                        cor = '#d4af37';
+
+                    if (entry.status === 'Cancelados')
+                        cor = '#e74c3c';
+                    if (entry.status === 'Finalizados')
+                        cor = '#3498db';
+
+                    return (
+                        <Cell
+                            key={`cell-${index}`}
+                            fill={cor}
+                        />
+                    );
+
+                })}
+
+            </Bar>
+
+        </BarChart>
+
+    </ResponsiveContainer>
+
+</div>
+
+
 
                 {/* LISTA */}
                 <div className='lista-agendamentos'>
 
-                    <h2 className='subtitulo-admin'>
-                        Todos os Agendamentos
-                    </h2>
+                    <h2>Painel de Agendamentos</h2>
 
-                    {agendamentos.length === 0 ? (
-                        <p>Nenhum agendamento encontrado.</p>
-                    ) : (
+                    {agendamentos.map(item => (
 
-                        agendamentos.map(item => (
+                        <div key={item.id} className='agendamento-item'>
 
-                            <div key={item.id} className='agendamento-item'>
+                            <div><strong>{item.cliente}</strong></div>
+                            <div>{item.tipo}</div>
+                            <div>{item.profissional}</div>
+                            <div>{item.hora}</div>
+                            <div>{item.status}</div>
 
-                                <div><strong>{item.cliente}</strong></div>
-                                <div>{item.tipo}</div>
-                                <div>{item.profissional}</div>
+                            <div className='botoes-acoes'>
 
-                                <div>
-                                    {item.data?.toDate
-                                        ? item.data.toDate().toLocaleString('pt-BR')
-                                        : ''}
-                                </div>
+                                <button
+                                    className='btn-confirmar'
+                                    onClick={() => confirmarAgendamento(item.id)}
+                                >
+                                    Confirmar
+                                </button>
 
-                                <div>{item.hora}</div>
+                                <button
+                                    className='btn-editar'
+                                    onClick={() => editarAgendamento(item.id)}
+                                >
+                                    Editar
+                                </button>
 
-                                <div>{item.status}</div>
+                                <button
+                                    className='btn-cancelar'
+                                    onClick={() => cancelarAgendamento(item.id)}
+                                >
+                                    Cancelar
+                                </button>
 
-                                <div className='botoes-acoes'>
-
-                                    {item.status !== 'Confirmado' && (
-                                        <button
-                                            className='btn-confirmar'
-                                            onClick={() => confirmarAgendamento(item.id)}
-                                        >
-                                            Confirmar
-                                        </button>
-                                    )}
-
+                                {/* ✔ FINALIZAR (NOVO) */}
+                                {item.status !== 'Finalizado' && (
                                     <button
-                                        className='btn-excluir'
-                                        onClick={() => excluirAgendamento(item.id)}
+                                        className='btn-finalizar'
+                                        onClick={() => finalizarAgendamento(item.id)}
                                     >
-                                        Excluir
+                                        Finalizar
                                     </button>
+                                )}
 
-                                </div>
+                                <button
+                                    className='btn-excluir'
+                                    onClick={() => excluirAgendamento(item.id)}
+                                >
+                                    Excluir
+                                </button>
 
                             </div>
 
-                        ))
+                        </div>
 
-                    )}
+                    ))}
 
                 </div>
 
             </div>
-
         </>
-
     );
 }
 

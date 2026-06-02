@@ -1,0 +1,624 @@
+/* =========================
+   FUNDO
+========================= */
+
+body{
+
+    background:
+    radial-gradient(
+        circle at top left,
+        rgba(212,175,55,0.08),
+        transparent 25%
+    ),
+    #070707;
+
+    min-height: 100vh;
+
+    font-family: Arial, sans-serif;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.profissionais-container{
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-height: 100vh;
+
+    padding: 30px;
+}
+
+/* =========================
+   BOX
+========================= */
+
+.profissionais-box{
+
+    width: 95%;
+
+    max-width: 1200px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #161616,
+        #101010
+    );
+
+    border:
+    1px solid rgba(212,175,55,0.10);
+
+    border-radius: 26px;
+
+    padding: 45px;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.35);
+}
+
+/* =========================
+   TÍTULO
+========================= */
+
+.titulo-profissionais{
+
+    color: #d4af37;
+
+    font-size: 38px;
+
+    font-weight: 800;
+
+    margin-bottom: 10px;
+
+    letter-spacing: 0.5px;
+}
+
+/* =========================
+   SUBTÍTULO
+========================= */
+
+.subtitulo-profissionais{
+
+    color: #9b9b9b;
+
+    margin-bottom: 35px;
+
+    font-size: 15px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.input-profissionais{
+
+    width: 100%;
+
+    height: 58px;
+
+    background: #141414;
+
+    border:
+    1px solid rgba(212,175,55,0.12);
+
+    border-radius: 16px;
+
+    padding: 0 18px;
+
+    color: white;
+
+    margin-bottom: 18px;
+
+    transition: 0.25s ease;
+
+    font-size: 15px;
+}
+
+/* PLACEHOLDER */
+
+.input-profissionais::placeholder{
+
+    color: #777;
+}
+
+/* FOCUS */
+
+.input-profissionais:focus{
+
+    outline: none;
+
+    border:
+    1px solid #d4af37;
+
+    box-shadow:
+    0 0 0 4px rgba(212,175,55,0.08);
+
+    background: #181818;
+}
+
+/* =========================
+   BOTÃO SALVAR
+========================= */
+
+.btn-salvar-profissional{
+
+    width: 100%;
+
+    height: 56px;
+
+    border: none;
+
+    border-radius: 16px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #d4af37,
+        #f1c85b
+    );
+
+    color: #000;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+
+    margin-top: 10px;
+
+    box-shadow:
+    0 10px 25px rgba(212,175,55,0.18);
+}
+
+/* HOVER */
+
+.btn-salvar-profissional:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 18px rgba(212,175,55,0.35),
+    0 14px 30px rgba(212,175,55,0.22);
+}
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+.btn-voltar{
+
+    background: transparent;
+
+    border: 1px solid rgba(212,175,55,0.20);
+
+    color: #d4af37;
+
+    height: 42px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    margin-bottom: 25px;
+
+    transition: 0.25s ease;
+
+    font-weight: 600;
+}
+
+.btn-voltar:hover{
+
+    background: rgba(212,175,55,0.10);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 15px rgba(212,175,55,0.12);
+}
+
+/* =========================
+   LISTA PROFISSIONAIS
+========================= */
+
+.lista-profissionais{
+
+
+    margin-top: 55px;
+}
+
+/* TÍTULO DA LISTA */
+
+.titulo-lista{
+    grid-column: 1 / -1;
+
+    color: #d4af37;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+/* =========================
+   CARD PROFISSIONAL
+========================= */
+
+.card-profissional{
+
+    background: #111;
+    border: 1px solid rgba(212,175,55,.2);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 420px;
+    text-align: center;
+}
+
+/* HOVER CARD */
+
+.card-profissional:hover{
+
+    transform: translateY(-8px);
+    border: 1px solid rgba(212,175,55,0.4);
+    box-shadow:
+    0 0 25px rgba(212,175,55,.15),
+    0 15px 35px rgba(0,0,0,.4);
+}
+
+/* NOME */
+
+.card-profissional h3{
+
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: white;
+}
+
+/* TELEFONE */
+
+.card-profissional p{
+
+    color: #9f9f9f;
+    margin-bottom: 14px;
+    font-size: 15px;
+}
+
+/* ESPECIALIDADE */
+
+.card-profissional span{
+
+    display: inline-block;
+    background:rgba(212,175,55,.15);
+    color: #d4af37;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    margin: 10px 0;
+
+    
+}
+
+/* =========================
+   AÇÕES CARD
+========================= */
+
+.acoes-profissional{
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 22px;
+
+    flex-wrap: wrap;
+}
+
+/* BOTÃO EDITAR */
+
+.btn-editar-profissional{
+
+    background:
+    linear-gradient(
+        135deg,
+        #d4af37,
+        #f1c85b
+    );
+
+    color: #000;
+
+    border: none;
+
+    height: 42px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.btn-editar-profissional:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 15px rgba(212,175,55,0.25);
+}
+
+/* BOTÃO EXCLUIR */
+
+.btn-excluir-profissional{
+
+    background: #e74c3c;
+
+    color: white;
+
+    border: none;
+
+    height: 42px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.btn-excluir-profissional:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 15px rgba(231,76,60,0.25);
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width: 768px){
+
+    .profissionais-box{
+
+        padding: 28px;
+    }
+
+    .titulo-profissionais{
+
+        font-size: 30px;
+    }
+
+    .titulo-lista{
+
+        font-size: 24px;
+    }
+
+    .card-profissional h3{
+
+        font-size: 20px;
+    }
+
+    .acoes-profissional{
+
+        flex-direction: column;
+    }
+
+    .btn-editar-profissional,
+    .btn-excluir-profissional{
+
+        width: 100%;
+    }
+}
+
+/* =========================
+   CONTADOR PROFISSIONAIS
+========================= */
+
+.contador-profissionais{
+
+    background:
+    linear-gradient(
+        145deg,
+        #1a1a1a,
+        #101010
+    );
+
+    border:
+    1px solid rgba(212,175,55,0.12);
+
+    border-radius: 18px;
+    padding: 18px 22px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.20);
+}
+
+.contador-profissionais span{
+
+    color: #bdbdbd;
+    font-size: 15px;
+}
+
+.contador-profissionais strong{
+
+    color: #d4af37;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+/* =========================
+   AÇÕES PROFISSIONAL
+========================= */
+
+.acoes-profissional{
+
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+}
+
+/* BOTÃO EXCLUIR */
+
+.btn-excluir-profissional{
+
+    background: #e74c3c;
+    color: white;
+    border: none;
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.25s ease;
+}
+
+.btn-excluir-profissional:hover{
+
+    transform: translateY(-2px);
+    box-shadow:
+    0 0 18px rgba(231,76,60,0.35);
+}
+
+/* BOTÃO EDITAR */
+
+.btn-editar-profissional{
+
+    background:
+    linear-gradient(
+        135deg,
+        #d4af37,
+        #f1c85b
+    );
+
+    color: #000;
+    border: none;
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.25s ease;
+}
+
+.btn-editar-profissional:hover{
+
+    transform: translateY(-2px);
+    box-shadow:
+    0 0 18px rgba(212,175,55,0.35);
+}
+
+/* VALOR SERVIÇO */
+
+.valor-servico{
+
+    color: #d4af37;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.conteudo-profissionais{
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+
+.formulario-profissionais{
+    width: 380px;
+    flex-shrink: 0;
+}
+
+.lista-profissionais{
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    align-content: start;
+
+}
+
+.foto-profissional {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    display: block;
+    border: 4px solid #d4af37;
+    box-shadow: 0 0 20px rgba(212,175,55,.25);
+}
+
+.status-profissional{
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background: rgba(46,204,113,0.15);
+    color: #2ecc71;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.estatisticas-profissionais{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card-estatistica{
+    flex: 1;
+    background: #111;
+    border: 1px solid rgba(212,175,55,.15);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.card-estatistica h3{
+    color: #d4af37;
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.card-estatistica p{
+    color: #999;
+}
+
+.preview-foto{
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    display: block;
+    border: 4px solid #d4af37;
+}

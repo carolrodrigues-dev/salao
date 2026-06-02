@@ -3,20 +3,28 @@ import './home.css';
 import firebase from '../../config/firebase';
 import TipoServico from '../../components/tipo-servico/tipo-servico';
 import Navbar from '../../components/navbar';
+import { useSelector } from 'react-redux';
 
 function Home() {
 
     const [salao, setSalao] = useState([]);
     const [pesquisa, setPesquisa] = useState('');
+    const usuarioEmail = useSelector(
+        state => state.usuarioEmail
+    );
+
+    const admin =
+        usuarioEmail?.trim().toLowerCase() === 'admin@gmail.com';
+
 
     useEffect(() => {
 
         async function carregarDados() {
 
             const resultado = await firebase
-            .firestore()
-            .collection('salao')
-            .get();
+                .firestore()
+                .collection('salao')
+                .get();
 
             let listaservicos = [];
 
@@ -28,10 +36,10 @@ function Home() {
 
                 if (
                     cliente
-                    .toLowerCase()
-                    .includes(
-                        pesquisa.toLowerCase()
-                    )
+                        .toLowerCase()
+                        .includes(
+                            pesquisa.toLowerCase()
+                        )
                 ) {
 
                     listaservicos.push({
@@ -45,6 +53,9 @@ function Home() {
 
             setSalao(listaservicos);
 
+            // DASHBOARD
+
+            
         }
 
         carregarDados();
@@ -60,17 +71,21 @@ function Home() {
             <div className="agendamentos-container">
 
                 <h1 className='titulo-home'>
-                    CLIENTES
-                </h1>
+    {admin
+        ? 'PAINEL ADMINISTRATIVO'
+        : 'MEUS AGENDAMENTOS'}
+</h1>
+
 
                 {/* BUSCA */}
+
                 <div className="busca-container">
 
                     <i className="fas fa-search icone-busca"></i>
 
                     <input
                         type="text"
-                        placeholder="Pesquisar pelo cliente"
+                        placeholder="Pesquisar cliente"
                         value={pesquisa}
                         onChange={(e) =>
                             setPesquisa(e.target.value)
@@ -81,41 +96,45 @@ function Home() {
                 </div>
 
                 {/* LISTA */}
+
                 <div className="lista-agendamentos">
 
-                    {
+                    {salao.length === 0 ? (
 
-                    salao.length === 0 ? (
+                    <div className="sem-resultados">
 
-                        <p className="sem-resultados">
-                            Nenhum cliente encontrado
-                        </p>
+                    <h3>Você ainda não possui agendamentos.</h3>
+
+                    <p>
+                    Clique em "Marcar Horário" para criar seu primeiro agendamento.
+                    </p>
+
+                    </div>
 
                     ) : (
 
-                        salao.map(item => (
+                            salao.map(item => (
 
-                            <TipoServico
-                                key={item.id}
-                                id={item.id}
-                                foto={item.foto}
-                                cliente={item.cliente}
-                                telefone={item.telefone}
-                                valor={item.valor}
-                                servico={item.servico}
-                                tipo={item.tipo}
-                                descricao={item.descricao}
-                                profissional={item.profissional}
-                                data={item.data}
-                                hora={item.hora}
-                                detalhes={item.detalhes}
-                                visualizacoes={item.visualizacoes}
-                                status={item.status}
-                            />
+                                <TipoServico
+                                    key={item.id}
+                                    id={item.id}
+                                    foto={item.foto}
+                                    cliente={item.cliente}
+                                    telefone={item.telefone}
+                                    valor={item.valor}
+                                    servico={item.servico}
+                                    tipo={item.tipo}
+                                    descricao={item.descricao}
+                                    profissional={item.profissional}
+                                    data={item.data}
+                                    hora={item.hora}
+                                    detalhes={item.detalhes}
+                                    status={item.status}
+                                />
 
-                        ))
+                            ))
 
-                    )
+                        )
 
                     }
 

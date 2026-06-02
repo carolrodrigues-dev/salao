@@ -2,7 +2,7 @@
 .card-servico{
      background:
     linear-gradient(145deg, #161616, #101010);
-
+    min-height: 140px;
     border:
     1px solid rgba(212,175,55,0.12);
 
@@ -28,7 +28,7 @@
     top: 0;
     left: 0;
 
-    width: 5px;
+    width: 2px;
     height: 100%;
 
     background:
@@ -40,7 +40,7 @@
 
     border-radius: 20px 0 0 20px;
 
-    opacity: 0.9;
+    opacity: 0.6;
 }
 
 /* BRILHO */
@@ -311,7 +311,7 @@
 
     color: #000;
 
-    padding: 11px 18px;
+    padding: 9px 16px;
 
     border-radius: 12px;
 
@@ -319,7 +319,7 @@
 
     font-weight: bold;
 
-    font-size: 14px;
+    font-size: 13px;
 
     transition: 0.25s;
 
@@ -396,9 +396,9 @@
 .modal-detalhes{
 
     width: 100%;
-    max-width: 580px;
+    max-width: 560px;
 
-    max-height: 90vh;
+    max-height: 75vh;
 
     overflow-y: auto;
 
@@ -410,7 +410,7 @@
 
     border-radius: 24px;
 
-    padding: 28px;
+    padding: 22px;
 
     position: relative;
 
@@ -479,7 +479,7 @@
 
     flex-direction: column;
 
-    gap: 14px;
+    gap: 10px;
 }
 
 /* ITEM */
@@ -493,7 +493,7 @@
 
     border-radius: 16px;
 
-    padding: 14px;
+    padding: 12px;
 }
 
 .item-modal span{
@@ -683,4 +683,25 @@
 
 .btn-excluir:hover {
     background: #d80000;
+}
+
+.profissional-destaque {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 12px 0;
+
+    padding: 10px 18px;
+
+    background: rgba(212, 175, 55, 0.12);
+
+    border: 1px solid #d4af37;
+
+    border-radius: 30px;
+
+    color: #d4af37;
+
+    font-size: 1.1rem;
+    font-weight: 600;
 }

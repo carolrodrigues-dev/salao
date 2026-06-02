@@ -386,3 +386,74 @@ input[type="file"] {
         right: 18px;
     }
 }
+
+.msg-horario-ocupado{
+
+    background: rgba(241, 196, 15, 0.12);
+
+    border: 1px solid rgba(241, 196, 15, 0.30);
+
+    color: #f1c40f;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    margin-top: 15px;
+
+    text-align: center;
+
+    font-weight: 600;
+}
+
+/* =========================
+   HORÁRIOS (AJUSTE VISUAL PREMIUM)
+========================= */
+
+.horarios-container {
+    margin-top: 25px;
+}
+
+.horarios-container label {
+    color: #d4af37;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+.horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+/* BOTÃO HORÁRIO */
+.horario-btn {
+    padding: 12px 10px;
+    border-radius: 14px;
+    border: 1px solid rgba(212,175,55,0.15);
+    background: rgba(20,20,20,0.6);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
+}
+
+/* HOVER */
+.horario-btn:hover {
+    transform: translateY(-2px);
+    border-color: #d4af37;
+    box-shadow: 0 0 12px rgba(212,175,55,0.25);
+}
+
+/* SELECIONADO */
+.horario-btn.ativo {
+    background: linear-gradient(135deg, #d4af37, #f1c85b);
+    color: #000;
+    font-weight: 800;
+    border: none;
+    box-shadow: 0 10px 25px rgba(212,175,55,0.25);
+}

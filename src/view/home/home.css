@@ -136,11 +136,29 @@
 }
 
 /* SEM RESULTADO */
-.sem-resultados{
+.sem-resultados {
 
-    color: #999;
+    text-align: center;
 
-    font-size: 15px;
+    padding: 50px 20px;
+
+    color: #d4af37;
+}
+
+.sem-resultados h3 {
+
+    font-size: 24px;
+
+    margin-bottom: 10px;
+
+    color: #fff;
+}
+
+.sem-resultados p {
+
+    font-size: 16px;
+
+    color: #bdbdbd;
 }
 
 /* RESPONSIVO */
@@ -166,3 +184,48 @@
     }
 
 }
+.dashboard-cards{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.card-dashboard{
+    flex:1;
+    min-width:180px;
+
+    background:#151515;
+
+    border:1px solid rgba(212,175,55,.15);
+
+    border-radius:16px;
+
+    padding:20px;
+
+    text-align:center;
+}
+
+.card-dashboard h3{
+    color:#d4af37;
+    margin-bottom:10px;
+}
+
+.card-dashboard span{
+    color:white;
+    font-size:32px;
+    font-weight:bold;
+}
+
+.pendente{
+    border-left:4px solid #f1c40f;
+}
+
+.confirmado{
+    border-left:4px solid #2ecc71;
+}
+
+.cancelado{
+    border-left:4px solid #e74c3c;
+}
+

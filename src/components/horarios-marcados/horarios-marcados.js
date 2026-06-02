@@ -8,21 +8,27 @@ import TipoServico from '../tipo-servico/tipo-servico';
 function HorarioMarcado() {
 
     const [salao, setSalao] = useState([]);
-    const [todosServicos, setTodosServicos] = useState([]);
     const [pesquisa, setPesquisa] = useState('');
     const [dataSelecionada, setDataSelecionada] = useState(null);
     const [filtroStatus, setFiltroStatus] = useState('Todos');
 
-    /* BUSCAR DADOS */
+    /* =========================
+       BUSCAR AGENDAMENTOS (SEGURO)
+    ========================= */
     useEffect(() => {
 
-        let lista = [];
+        const unsubscribe = firebase.auth().onAuthStateChanged(async (usuario) => {
 
-        firebase.firestore()
-            .collection('salao')
-            .get()
+            if (!usuario) return;
 
-            .then((resultado) => {
+            try {
+
+                const resultado = await firebase.firestore()
+                    .collection('salao')
+                    .where('userId', '==', usuario.uid) // 🔥 FILTRO REAL
+                    .get();
+
+                let lista = [];
 
                 resultado.docs.forEach(doc => {
                     lista.push({
@@ -31,32 +37,39 @@ function HorarioMarcado() {
                     });
                 });
 
-                setTodosServicos(lista);
                 setSalao(lista);
-            });
+
+            } catch (error) {
+                console.log('Erro ao buscar agendamentos:', error);
+            }
+        });
+
+        return () => unsubscribe();
 
     }, []);
 
-    /* FILTROS */
+    /* =========================
+       FILTROS (FRONT-END)
+    ========================= */
     useEffect(() => {
 
-        let resultado = [...todosServicos];
+        let resultado = [...salao];
 
-        /* PESQUISA */
+        // PESQUISA
         resultado = resultado.filter(item =>
             item.cliente
                 ?.toLowerCase()
                 .includes(pesquisa.toLowerCase())
         );
 
-        /* STATUS */
+        // STATUS
         if (filtroStatus !== 'Todos') {
             resultado = resultado.filter(item =>
                 item.status === filtroStatus
             );
         }
 
-        /* FILTRO DATA */
+        // DATA
         if (dataSelecionada) {
 
             const dataFormatada =
@@ -87,9 +100,11 @@ function HorarioMarcado() {
 
         setSalao(resultado);
 
-    }, [pesquisa, filtroStatus, dataSelecionada, todosServicos]);
+    }, [pesquisa, filtroStatus, dataSelecionada]);
 
-    /* FORMATAR DATA */
+    /* =========================
+       FORMATAR DATA
+    ========================= */
     const formatarData = (valor) => {
 
         if (!valor) return '';
@@ -120,7 +135,7 @@ function HorarioMarcado() {
                 <div className='topo-clientes'>
 
                     <h2 className='titulo-clientes'>
-                        CLIENTES
+                        MEUS AGENDAMENTOS
                     </h2>
 
                     <div className='filtros-container'>
@@ -141,12 +156,10 @@ function HorarioMarcado() {
                                 setFiltroStatus(e.target.value)
                             }
                         >
-
                             <option value='Todos'>Todos</option>
                             <option value='Pendente'>Pendentes</option>
                             <option value='Confirmado'>Confirmados</option>
                             <option value='Cancelado'>Cancelados</option>
-
                         </select>
 
                     </div>
@@ -157,20 +170,19 @@ function HorarioMarcado() {
 
                     {salao.map(item => (
                         <TipoServico
-                            key={item.id}
-                            id={item.id}
-                            cliente={item.cliente}
-                            telefone={item.telefone}
-                            valor={item.valor}   // 🔥 CORRIGIDO AQUI
-                            tipo={item.tipo}
-                            descricao={item.descricao}
-                            profissional={item.profissional}
-                            data={formatarData(item.data)}
-                            hora={item.hora}
-                            detalhes={item.detalhes}
-                            visualizacoes={item.visualizacoes}
-                            status={item.status}
-                        />
+    key={item.id}
+    id={item.id}
+    cliente={item.cliente}
+    telefone={item.telefone}
+    valor={item.valor}
+    tipo={item.tipo}
+    descricao={item.descricao}
+    profissional={item.profissional}
+    data={formatarData(item.data)}
+    hora={item.hora}
+    detalhes={item.detalhes}
+    status={item.status}
+/>
                     ))}
 
                     {salao.length === 0 && (

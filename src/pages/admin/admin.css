@@ -1,115 +1,188 @@
-.admin-container{
-
+.admin-container {
     padding: 40px;
     min-height: 100vh;
     background: #070707;
     color: white;
 }
 
-.titulo-admin{
+/* =========================
+   TOPO
+========================= */
+
+.topo-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.titulo-admin {
     font-size: 42px;
-    margin-bottom: 40px;
     color: #d4af37;
 }
 
-.cards-admin{
+/* =========================
+   BOTÃO TOPO
+========================= */
+
+.btn-admin-topo {
+    background: linear-gradient(135deg, #d4af37, #f1c85b);
+    color: #000;
+    border: none;
+    height: 52px;
+    padding: 0 24px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.cards-admin {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 25px;
 }
 
-.card-admin{
+.card-admin {
     background: linear-gradient(145deg, #171717, #101010);
     border: 1px solid rgba(212,175,55,0.12);
     border-radius: 24px;
     padding: 30px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.card-admin h2{
-    color: #d4af37;
-    margin-bottom: 20px;
-}
+/* =========================
+   AGENDAMENTOS
+========================= */
 
-.card-admin span{
-    font-size: 48px;
-    font-weight: bold;
-}
-
-.subtitulo-admin{
-    color: #fff;
-    margin-top: 50px;
-    margin-bottom: 25px;
-}
-
-.lista-agendamentos{
-    margin-top: 20px;
-}
-
-.agendamento-item{
+.agendamento-item {
     background: linear-gradient(145deg, #161616, #101010);
     border: 1px solid rgba(212,175,55,0.10);
     border-radius: 18px;
-    padding: 20px;
+    padding: 25px;
     margin-bottom: 18px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 15px;
-    align-items: center;
 }
 
-/* STATUS */
-.status{
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 6px;
-}
+/* =========================
+   BOTÕES
+========================= */
 
-.status-confirmado{
-    color: #2ecc71;
-}
-
-.status-pendente{
-    color: #f1c40f;
-}
-
-.status-cancelado{
-    color: #e74c3c;
-}
-
-/* BOTÕES */
-.botoes-acoes{
+.botoes-acoes {
     display: flex;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
-.btn-confirmar{
+/* BASE CORRETA (SEM ALL UNSET) */
+.botoes-acoes button {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+/* CONFIRMAR */
+.btn-confirmar {
     background: #2ecc71;
     color: white;
-    border: none;
-    padding: 6px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 12px;
 }
 
-.btn-confirmar:hover{
-    opacity: 0.85;
+.btn-confirmar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(46,204,113,0.35);
 }
 
-.btn-excluir{
+/* EDITAR */
+.btn-editar {
+    background: #d4af37;
+    color: #000;
+}
+
+.btn-editar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(212,175,55,0.4);
+}
+
+/* CANCELAR */
+.btn-cancelar {
+    background: #2b2b2b;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.btn-cancelar:hover {
+    background: #3a3a3a;
+    transform: translateY(-2px);
+}
+
+/* EXCLUIR */
+.btn-excluir {
     background: #e74c3c;
     color: white;
-    border: none;
-    padding: 6px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 12px;
 }
 
-.btn-excluir:hover{
-    opacity: 0.85;
+.btn-excluir:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(231,76,60,0.35);
+}
+
+/* FINALIZAR */
+.btn-finalizar {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-finalizar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(39,174,96,0.35);
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+
+    .admin-container {
+        padding: 20px;
+    }
+
+    .titulo-admin {
+        font-size: 32px;
+    }
+
+    .agendamento-item {
+        grid-template-columns: 1fr;
+    }
+}
+
+.grafico-admin {
+
+    margin-top: 30px;
+
+    background: #111;
+
+    border-radius: 16px;
+
+    padding: 25px;
+
+    border: 1px solid #2a2a2a;
+}
+
+.grafico-admin h2 {
+
+    color: white;
+
+    margin-bottom: 20px;
+
+    text-align: center;
 }

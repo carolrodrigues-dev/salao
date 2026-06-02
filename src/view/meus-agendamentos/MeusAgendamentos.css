@@ -1,0 +1,27 @@
+.lista-agendamentos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card-agendamento {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.status-pendente {
+    color: #f0ad4e;
+    font-weight: bold;
+}
+
+.status-confirmado {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-cancelado {
+    color: #dc3545;
+    font-weight: bold;
+}

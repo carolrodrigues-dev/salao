@@ -12,6 +12,7 @@ import UsuarioRecuperarSenha from './view/usuario-recuperar-senha';
 import ServicoSalao from './view/servico-salao';
 import Detalhes from './view/Salao-detalhes/detalhes';
 import Admin from './pages/admin/admin';
+import Profissionais from './pages/profissionais/profissionais';
 
 function App() {
   return (
@@ -29,8 +30,10 @@ function App() {
             <Route path="/novousuario" element={<NovoUsuario />} />
             <Route path="/usuariorecuperarsenha" element={<UsuarioRecuperarSenha />} />
             <Route path="/servicosalao" element={<ServicoSalao />} />
+            <Route path="/editar/:id" element={<ServicoSalao />} />
             <Route path="/detalhes/:id" element={<Detalhes />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/profissionais" element={<Profissionais />} />
           </Routes>
 
         </Router>

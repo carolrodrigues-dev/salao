@@ -8,8 +8,11 @@ import firebase from '../../config/firebase';
 
 function ServicoSalao() {
 
+    const [listaProfissionais, setListaProfissionais] = useState([]);
+    const [horariosOcupados, setHorariosOcupados] = useState([]);
+
     const [carregando, setCarregando] = useState(false);
-    const [msgTipo, setMsgTipo] = useState();
+    const [msgTipo, setMsgTipo] = useState('');
 
     const [cliente, setCliente] = useState('');
     const [tipo, setTipo] = useState('');
@@ -17,89 +20,115 @@ function ServicoSalao() {
     const [detalhes, setDetalhes] = useState('');
     const [profissional, setProfissional] = useState('');
     const [data, setData] = useState('');
-    const [hora, setHora] = useState('');
     const [telefone, setTelefone] = useState('');
 
     const [fotoAtual, setFotoAtual] = useState();
     const [fotoNova, setFotoNova] = useState();
 
+    const [horarioSelecionado, setHorarioSelecionado] = useState('');
+
     const usuarioEmail = useSelector(state => state.usuarioEmail);
 
     const { id } = useParams();
-
     const navigate = useNavigate();
 
     const storage = firebase.storage();
     const db = firebase.firestore();
 
-    /* SERVIÇOS */
-    const servicos = [
+    const usuarioLogado = firebase.auth().currentUser;
 
-        {
-            nome: "Corte masculino",
-            valor: 30,
-            profissional: "Rafael Costa"
-        },
+    /* =========================
+       HORÁRIOS AUTOMÁTICOS
+    ========================= */
+    const gerarHorarios = () => {
 
-        {
-            nome: "Corte infantil",
-            valor: 25,
-            profissional: "Thiago Almeida"
-        },
+        const horarios = [];
+        let hora = 8;
+        let minuto = 0;
 
-        {
-            nome: "Corte degradê (fade)",
-            valor: 40,
-            profissional: "Bruno Henrique"
-        },
+        while (hora < 18) {
 
-        {
-            nome: "Corte tesoura",
-            valor: 35,
-            profissional: "Rafael Costa"
-        },
+            const h = String(hora).padStart(2, '0');
+            const m = String(minuto).padStart(2, '0');
 
-        {
-            nome: "Barba simples",
-            valor: 20,
-            profissional: "Thiago Almeida"
-        },
+            horarios.push(`${h}:${m}`);
 
-        {
-            nome: "Barba completa",
-            valor: 30,
-            profissional: "Bruno Henrique"
-        },
+            minuto += 30;
 
-        {
-            nome: "Design de barba",
-            valor: 25,
-            profissional: "Rafael Costa"
-        },
-
-        {
-            nome: "Sobrancelha na navalha",
-            valor: 15,
-            profissional: "Thiago Almeida"
-        },
-
-        {
-            nome: "Limpeza de pele",
-            valor: 50,
-            profissional: "Bruno Henrique"
+            if (minuto === 60) {
+                minuto = 0;
+                hora++;
+            }
         }
 
-    ];
+        return horarios;
+    };
+
+    /* =========================
+       BUSCAR HORÁRIOS OCUPADOS
+    ========================= */
+    useEffect(() => {
+
+        async function buscarHorariosOcupados() {
+
+            if (!data || !profissional) {
+                setHorariosOcupados([]);
+                return;
+            }
+
+            const dataFormatada = new Date(data + 'T12:00:00');
+
+            const resultado = await db
+                .collection('salao')
+                .where('data', '==', dataFormatada)
+                .where('profissional', '==', profissional)
+                .get();
+
+            const ocupados = resultado.docs.map(doc => doc.data().hora);
+
+            setHorariosOcupados(ocupados);
+        }
+
+        buscarHorariosOcupados();
+
+    }, [data, profissional, db]);
+
+    /* =========================
+       CARREGAR PROFISSIONAIS
+    ========================= */
 
     useEffect(() => {
 
+        async function carregarProfissionais() {
+
+            try {
+
+                const resultado = await db.collection('profissionais').get();
+
+                let lista = [];
+
+                resultado.docs.forEach(doc => {
+                    lista.push({ id: doc.id, ...doc.data() });
+                });
+
+                setListaProfissionais(lista);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        carregarProfissionais();
+
+        /* =========================
+           EDITAR
+        ========================= */
+
         if (id) {
 
-            firebase.firestore()
-                .collection('salao')
+            db.collection('salao')
                 .doc(id)
                 .get()
-
                 .then(resultado => {
 
                     const doc = resultado.data();
@@ -109,138 +138,159 @@ function ServicoSalao() {
                     setValor(Number(doc.valor) || 0);
                     setDetalhes(doc.detalhes || '');
                     setProfissional(doc.profissional || '');
-                    setData(doc.data || '');
-                    setHora(doc.hora || '');
                     setTelefone(doc.telefone || '');
+
+                    setHorarioSelecionado(doc.hora || '');
+
+                    setData(
+                        doc.data
+                            ? doc.data.toDate().toISOString().split('T')[0]
+                            : ''
+                    );
+
                     setFotoAtual(doc.foto || null);
 
                 });
-
         }
 
-    }, [id]);
+    }, [id, db]);
 
-    /* ATUALIZAR */
-    function atualizar() {
+    /* =========================
+       CADASTRAR
+    ========================= */
 
-        setMsgTipo(null);
-        setCarregando(true);
-
-        const atualizarFirestore = () => {
-
-            db.collection('salao')
-                .doc(id)
-                .update({
-
-                    cliente,
-                    tipo,
-                    valor: Number(valor),
-                    detalhes,
-                    data,
-                    hora,
-                    profissional,
-                    telefone,
-                    foto: fotoNova ? fotoNova.name : fotoAtual
-
-                })
-                .then(() => {
-
-                    setMsgTipo('sucesso');
-                    setCarregando(false);
-
-                })
-                .catch(() => {
-
-                    setMsgTipo('erro');
-                    setCarregando(false);
-
-                });
-
-        };
-
-        if (fotoNova) {
-
-            storage.ref(`imagens/${fotoNova.name}`)
-                .put(fotoNova)
-                .then(() => atualizarFirestore());
-
-        } else {
-
-            atualizarFirestore();
-
-        }
-    }
-
-    /* CADASTRAR */
     async function cadastrar() {
 
-        setMsgTipo(null);
+        setMsgTipo('');
 
-        if (!cliente || !tipo || !profissional || !data || !hora) {
-
+        if (!cliente || !tipo || !profissional || !data || !horarioSelecionado) {
             setMsgTipo('erro');
             return;
-
         }
 
         setCarregando(true);
 
         try {
 
-            /* UPLOAD FOTO */
-            if (fotoNova) {
+            const dataFormatada = new Date(data + 'T12:00:00');
 
-                await storage
-                    .ref(`imagens/${fotoNova.name}`)
-                    .put(fotoNova);
+            const agendamentoExistente = await db
+                .collection('salao')
+                .where('data', '==', dataFormatada)
+                .where('hora', '==', horarioSelecionado)
+                .where('profissional', '==', profissional)
+                .get();
 
+            if (!agendamentoExistente.empty) {
+                setMsgTipo('horario-ocupado');
+                setCarregando(false);
+                return;
             }
 
-            /* SALVAR FIREBASE */
+            let fotoURL = null;
+
+            if (fotoNova) {
+                const storageRef = storage.ref(`imagens/${fotoNova.name}`);
+                await storageRef.put(fotoNova);
+                fotoURL = await storageRef.getDownloadURL();
+            }
+
             await db.collection('salao').add({
 
                 cliente,
                 tipo,
                 valor: Number(valor),
                 detalhes,
-                data,
-                hora,
+                data: dataFormatada,
+                hora: horarioSelecionado,
                 profissional,
                 telefone,
-
-                foto: fotoNova ? fotoNova.name : null,
+                foto: fotoURL,
 
                 usuario: usuarioEmail,
-                visualizacoes: 0,
-                publico: 1,
-                criacao: new Date(),
-                status: 'Pendente'
+                userId: usuarioLogado?.uid,
+
+                status: 'Pendente',
+                criacao: new Date()
 
             });
 
             setMsgTipo('sucesso');
 
         } catch (error) {
-
             console.log(error);
-
             setMsgTipo('erro');
-
         } finally {
-
             setCarregando(false);
+        }
+    }
 
+    /* =========================
+       ATUALIZAR
+    ========================= */
+
+    async function atualizar() {
+
+        setMsgTipo('');
+        setCarregando(true);
+
+        try {
+
+            const dataFormatada = new Date(data + 'T12:00:00');
+
+            const agendamentoExistente = await db
+                .collection('salao')
+                .where('data', '==', dataFormatada)
+                .where('hora', '==', horarioSelecionado)
+                .where('profissional', '==', profissional)
+                .get();
+
+            const horarioOcupado = agendamentoExistente.docs.find(doc => doc.id !== id);
+
+            if (horarioOcupado) {
+                setMsgTipo('horario-ocupado');
+                setCarregando(false);
+                return;
+            }
+
+            let fotoURL = fotoAtual;
+
+            if (fotoNova) {
+                const storageRef = storage.ref(`imagens/${fotoNova.name}`);
+                await storageRef.put(fotoNova);
+                fotoURL = await storageRef.getDownloadURL();
+            }
+
+            await db.collection('salao').doc(id).update({
+
+                cliente,
+                tipo,
+                valor: Number(valor),
+                detalhes,
+                data: dataFormatada,
+                hora: horarioSelecionado,
+                profissional,
+                telefone,
+                foto: fotoURL
+
+            });
+
+            setMsgTipo('sucesso');
+
+        } catch (error) {
+            console.log(error);
+            setMsgTipo('erro');
+        } finally {
+            setCarregando(false);
         }
     }
 
     return (
-
         <>
             <Navbar />
 
             <div className='col-12 mt-5 formulario-container'>
 
-                {/* BOTÃO FECHAR */}
                 <button
                     className='btn-fechar-pagina'
                     onClick={() => navigate('/home')}
@@ -248,158 +298,111 @@ function ServicoSalao() {
                     ✕
                 </button>
 
-                <div className='row'>
-
-                    <h3 className='mx-auto font-weigth-bold'>
-
-                        {id
-                            ? 'ATUALIZAR SERVIÇO'
-                            : 'AGENDAR HORARIO'}
-
-                    </h3>
-
-                <p className='subtitulo-formulario'>
-                Sistema inteligente de agendamento para barbearias
-                </p>
-
-                </div>
+                <h3>
+                    {id ? 'ATUALIZAR SERVIÇO' : 'AGENDAR HORÁRIO'}
+                </h3>
 
                 <form>
 
-                    {/* CLIENTE */}
                     <input
                         value={cliente}
-                        onChange={e =>
-                            setCliente(e.target.value)
-                        }
+                        onChange={e => setCliente(e.target.value)}
                         className='form-control'
                         placeholder='Cliente'
                     />
 
-                    {/* TELEFONE */}
                     <input
                         value={telefone}
-                        onChange={e =>
-                            setTelefone(e.target.value)
-                        }
+                        onChange={e => setTelefone(e.target.value)}
                         className='form-control mt-2'
                         placeholder='Telefone'
                     />
 
-                    {/* SERVIÇO */}
                     <select
                         value={tipo}
-                        onChange={(e) => {
-
-                            const servicoSelecionado =
-                                servicos.find(
-                                    s => s.nome === e.target.value
-                                );
-
+                        onChange={e => {
                             setTipo(e.target.value);
-
-                            setValor(
-                                Number(servicoSelecionado?.valor) || 0
-                            );
-
-                            setProfissional(
-                                servicoSelecionado?.profissional || ''
-                            );
-
+                            setProfissional('');
+                            setValor(0);
                         }}
                         className='form-control mt-2'
                     >
-
-                        <option value="">
-                            Selecione um serviço
-                        </option>
-
-                        {servicos.map((s, i) => (
-
-                            <option
-                                key={i}
-                                value={s.nome}
-                            >
-                                {s.nome}
-                            </option>
-
+                        <option value=''>Selecione um serviço</option>
+                        {[...new Set(listaProfissionais.map(p => p.especialidade))].map((servico, i) => (
+                            <option key={i} value={servico}>{servico}</option>
                         ))}
-
                     </select>
 
-                    {/* VALOR */}
-                    <input
-                        value={
-                            valor
-                                ? Number(valor).toFixed(2)
-                                : '0.00'
-                        }
-                        readOnly
-                        className='form-control mt-2'
-                        placeholder='Valor'
-                    />
-
-                    {/* PROFISSIONAL */}
-                    <input
+                    <select
                         value={profissional}
+                        onChange={e => {
+                            const prof = listaProfissionais.find(p => p.nome === e.target.value);
+                            setProfissional(e.target.value);
+
+                            if (prof) setValor(Number(prof.valor) || 0);
+                        }}
+                        className='form-control mt-2'
+                    >
+                        <option value=''>Selecione um profissional</option>
+
+                        {listaProfissionais
+                            .filter(p => p.especialidade === tipo)
+                            .map(p => (
+                                <option key={p.id} value={p.nome}>{p.nome}</option>
+                            ))}
+                    </select>
+
+                    <input
+                        value={valor ? Number(valor).toFixed(2) : '0.00'}
                         readOnly
                         className='form-control mt-2'
-                        placeholder='Profissional'
                     />
 
-                    {/* DATA */}
                     <input
                         type='date'
                         value={data}
-                        onChange={e =>
-                            setData(e.target.value)
-                        }
+                        onChange={e => setData(e.target.value)}
                         className='form-control mt-2'
                     />
 
-                    {/* HORA */}
-                    <input
-                        type='time'
-                        value={hora}
-                        onChange={e =>
-                            setHora(e.target.value)
-                        }
-                        className='form-control mt-2'
-                    />
+                    {/* HORÁRIOS (FILTRADOS) */}
+                    <div className="horarios-container">
 
-                    {/* BOTÃO */}
+                        <label>Selecione um horário:</label>
+
+                        <div className="horarios-grid">
+
+                            {gerarHorarios()
+                                .filter(h => !horariosOcupados.includes(h))
+                                .map((h, i) => (
+                                    <button
+                                        key={i}
+                                        type="button"
+                                        className={`horario-btn ${horarioSelecionado === h ? 'ativo' : ''}`}
+                                        onClick={() => setHorarioSelecionado(h)}
+                                    >
+                                        {h}
+                                    </button>
+                                ))}
+
+                        </div>
+
+                    </div>
+
                     <button
                         type='button'
                         className='btn-agendar mt-3'
                         onClick={id ? atualizar : cadastrar}
                         disabled={carregando}
                     >
-
-                        {carregando
-                            ? 'Salvando...'
-                            : id
-                            ? 'Atualizar'
-                            : 'Agendar'}
-
+                        {carregando ? 'Salvando...' : id ? 'Atualizar' : 'Agendar'}
                     </button>
 
                 </form>
 
-                {msgTipo === 'sucesso' && (
-
-                    <p className='msg-sucesso mt-2'>
-                    Horário salvo com sucesso!
-                    </p>
-
-                )}
-
-                {msgTipo === 'erro' && (
-
-                    <p className='text-danger mt-2'>
-                        Preencha todos os campos obrigatórios!
-                    </p>
-
-                )}
+                {msgTipo === 'sucesso' && <p className='msg-sucesso'>Horário salvo com sucesso!</p>}
+                {msgTipo === 'horario-ocupado' && <p className='msg-horario-ocupado'>Horário já ocupado.</p>}
+                {msgTipo === 'erro' && <p className='text-danger'>Preencha todos os campos!</p>}
 
             </div>
         </>

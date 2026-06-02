@@ -12,12 +12,12 @@ function TipoServico({
     data,
     hora,
     detalhes,
-    visualizacoes,
     status,
     foto,
     isAdmin,
     onDelete
-}) {
+})
+{
 
     const [modalAberto, setModalAberto] = useState(false);
     const [statusAtual, setStatusAtual] = useState(status || 'Pendente');
@@ -148,40 +148,29 @@ function TipoServico({
 
                         </div>
 
-                        <p className='descricao'>
-                            {descricao}
-                        </p>
 
-                        <p className='observacao-card'>
-                            {detalhes}
-                        </p>
+                        <div className='profissional-destaque'>
+
+                        ✂️ Profissional responsável: <strong>{profissional}</strong>
+
+                        </div>
 
                         <div className='info'>
 
-                            <span>
-                                <i className="fas fa-user"></i>
-                                {profissional}
-                            </span>
+                        <span>
+                        <i className="fas fa-calendar-alt"></i>
+                        {formatarData(data)} às {hora}
+                        </span>
 
-                            <span>
-                                <i className="fas fa-calendar-alt"></i>
-                                {formatarData(data)}
-                            </span>
+                        <span>
+                        <i className="fas fa-phone"></i>
+                        {telefone || '(31) 9****-9999'}
+                        </span>
 
-                            <span>
-                                <i className="fas fa-clock"></i>
-                                {hora}
-                            </span>
-
-                            <span>
-                                <i className="fas fa-phone"></i>
-                                {telefone || '(31) 9****-9999'}
-                            </span>
-
-                            <span>
-                                <i className="fas fa-dollar-sign"></i>
-                                {valorFormatado}
-                            </span>
+                        <span>
+                        <i className="fas fa-dollar-sign"></i>
+                        {valorFormatado}
+                        </span>
 
                         </div>
 
@@ -198,13 +187,9 @@ function TipoServico({
 
                             <div className='lado-info'>
 
-                                <span className='tipo'>
-                                    {tipo}
-                                </span>
-
-                                <span className='views'>
-                                    👁 {visualizacoes || 0}
-                                </span>
+                            <span className='tipo'>
+                            {tipo}
+                            </span>
 
                             </div>
 
@@ -278,13 +263,6 @@ function TipoServico({
                                 <strong>{valorFormatado}</strong>
                             </div>
 
-                            <div className='item-modal descricao-modal'>
-
-                                <span>Detalhes</span>
-
-                                <p>{detalhes}</p>
-
-                            </div>
 
                             {/* AÇÕES */}
                             <div className='acoes-modal'>

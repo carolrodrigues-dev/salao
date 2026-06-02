@@ -18,33 +18,24 @@ function Login() {
     const usuarioLogado = useSelector(state => state.usuarioLogado);
 
     // LOGIN EMAIL
-    function logar() {
+    function logar(e) {
+        if (e) e.preventDefault();
+
         firebase.auth()
             .signInWithEmailAndPassword(email, senha)
-            .then(() => {
+            .then((userCredential) => {
+
                 setMsgTipo('sucesso');
+
+                const uid = userCredential.user.uid;
 
                 setTimeout(() => {
                     dispatch({
                         type: 'LOG_IN',
-                        usuarioEmail: email
+                        usuarioEmail: email,
+                        uid: uid // 🔥 IMPORTANTE: agora salvamos o UID
                     });
                 }, 800);
-            })
-            .catch(() => {
-                setMsgTipo('erro');
-            });
-    }
-
-    // GOOGLE LOGIN (CORRIGIDO SEM COOP)
-    function logarComGoogle() {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                dispatch({
-                    type: 'LOG_IN',
-                    usuarioEmail: result.user.email
-                });
             })
             .catch((error) => {
                 console.log(error);
@@ -52,7 +43,28 @@ function Login() {
             });
     }
 
-    // REDIRECT SIMPLES E LIMPO
+    // GOOGLE LOGIN
+    function logarComGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth()
+            .signInWithPopup(provider)
+            .then((result) => {
+
+                dispatch({
+                    type: 'LOG_IN',
+                    usuarioEmail: result.user.email,
+                    uid: result.user.uid // 🔥 IMPORTANTE AQUI TAMBÉM
+                });
+
+            })
+            .catch((error) => {
+                console.log(error);
+                setMsgTipo('erro');
+            });
+    }
+
+    // REDIRECT
     if (usuarioLogado) {
         return <Navigate to="/home" />;
     }
@@ -94,15 +106,13 @@ function Login() {
                     </div>
 
                     <button onClick={logarComGoogle} className="btn-google" type="button">
-                    <img 
-                    src="https://www.svgrepo.com/show/475656/google-color.svg" 
-                    alt="Google"
-                    className="google-icon"
-                    />
-                    Entrar com Google
+                        <img
+                            src="https://www.svgrepo.com/show/475656/google-color.svg"
+                            alt="Google"
+                            className="google-icon"
+                        />
+                        Entrar com Google
                     </button>
-
-
 
                     <div className="msg-login text-center my-3">
                         {msgTipo === 'erro' && <span>Email ou senha inválidos</span>}
