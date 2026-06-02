@@ -7,9 +7,9 @@ import './usuario-novo.css';
 function NovoUsuario () {
 
    
-    const [email, setEmail] = useState();
-    const [senha, setSenha] = useState();
-    const [telefone, setTelefone] = useState();
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [telefone, setTelefone] = useState('');
     const [msgTipo, setMsgTipo] = useState();
     const [msg, setMsg] = useState();
     const [carregando, setCarregando] = useState();
@@ -27,7 +27,17 @@ function NovoUsuario () {
         return;
        }
        
-       firebase.auth().createUserWithEmailAndPassword(email,senha).then(resultado => {
+       firebase.auth().createUserWithEmailAndPassword(email,senha).then(async resultado => {
+        if (resultado?.user?.uid) {
+          await firebase.firestore()
+            .collection('usuarios')
+            .doc(resultado.user.uid)
+            .set({
+              email,
+              telefone
+            });
+        }
+
         setCarregando(0);
         setMsgTipo('sucesso')
        }).catch(erro => { 

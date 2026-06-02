@@ -8,6 +8,7 @@ import TipoServico from '../tipo-servico/tipo-servico';
 function HorarioMarcado() {
 
     const [salao, setSalao] = useState([]);
+    const [salaoOriginal, setSalaoOriginal] = useState([]);
     const [pesquisa, setPesquisa] = useState('');
     const [dataSelecionada, setDataSelecionada] = useState(null);
     const [filtroStatus, setFiltroStatus] = useState('Todos');
@@ -38,6 +39,7 @@ function HorarioMarcado() {
                 });
 
                 setSalao(lista);
+                setSalaoOriginal(lista);
 
             } catch (error) {
                 console.log('Erro ao buscar agendamentos:', error);
@@ -53,7 +55,7 @@ function HorarioMarcado() {
     ========================= */
     useEffect(() => {
 
-        let resultado = [...salao];
+        let resultado = [...salaoOriginal];
 
         // PESQUISA
         resultado = resultado.filter(item =>
@@ -100,7 +102,7 @@ function HorarioMarcado() {
 
         setSalao(resultado);
 
-    }, [pesquisa, filtroStatus, dataSelecionada]);
+    }, [pesquisa, filtroStatus, dataSelecionada, salaoOriginal]);
 
     /* =========================
        FORMATAR DATA

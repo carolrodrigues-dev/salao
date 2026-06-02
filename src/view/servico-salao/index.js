@@ -23,7 +23,7 @@ function ServicoSalao() {
     const [telefone, setTelefone] = useState('');
 
     const [fotoAtual, setFotoAtual] = useState();
-    const [fotoNova, setFotoNova] = useState();
+    const [fotoNova] = useState();
 
     const [horarioSelecionado, setHorarioSelecionado] = useState('');
 

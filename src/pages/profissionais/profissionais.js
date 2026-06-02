@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import firebase from '../../config/firebase';
 import './profissionais.css';
 
@@ -16,11 +15,6 @@ function Profissionais() {
 
     const db = firebase.firestore();
     const navigate = useNavigate();
-
-    const usuarioEmail = useSelector(state => state.usuarioEmail);
-
-    const admin =
-        usuarioEmail?.trim().toLowerCase() === 'admin@gmail.com';
 
     useEffect(() => {
 
