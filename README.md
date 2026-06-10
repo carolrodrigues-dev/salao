@@ -24,7 +24,6 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
   <img src="assets/agendamentos.png" width="500"/>
 </p>
 
-
 ---
 
 ## 📌 Funcionalidades
@@ -37,6 +36,7 @@ Cliente
 📋 Visualização dos próprios agendamentos
 ✏️ Edição de agendamentos
 ❌ Cancelamento de agendamentos
+
 ---
 
 ## 🛠️ Tecnologias utilizadas
