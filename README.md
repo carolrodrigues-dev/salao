@@ -41,16 +41,16 @@ Cliente
 
 ## 🛠️ Tecnologias utilizadas
 
-React.js
-JavaScript (ES6+)
-Firebase Authentication
-Firebase Firestore
-Firebase Storage
-React Router DOM
-Redux
-Recharts
-HTML5
-CSS3  
+- React.js
+- JavaScript (ES6+)
+- Firebase Authentication
+- Firebase Firestore
+- Firebase Storage
+- React Router DOM
+- Redux
+- Recharts
+- HTML5
+- CSS3  
 
 ---
 
