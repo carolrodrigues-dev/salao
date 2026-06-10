@@ -29,13 +29,13 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
 ## 📌 Funcionalidades
 
 Cliente
-🔐 Sistema de login de usuários
-🆕 Cadastro de novos usuários
-📅 Agendamento de horários
-🚫 Validação para evitar horários duplicados
-📋 Visualização dos próprios agendamentos
-✏️ Edição de agendamentos
-❌ Cancelamento de agendamentos
+- 🔐 Sistema de login de usuários
+- 🆕 Cadastro de novos usuários
+- 📅 Agendamento de horários
+- 🚫 Validação para evitar horários duplicados
+- 📋 Visualização dos próprios agendamentos
+- ✏️ Edição de agendamentos
+- ❌ Cancelamento de agendamentos
 
 ---
 
