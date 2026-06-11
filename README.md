@@ -24,11 +24,17 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
   <img src="assets/agendamentos.png" width="500"/>
 </p>
 
+### Dashboard Admin
+
+<p align="center">
+  <img src="assets/dash.png" width="500"/>
+</p>
+
 ---
 
 ## 📌 Funcionalidades
 
-Cliente
+👤 Área do Cliente
 - 🔐 Sistema de login de usuários
 - 🆕 Cadastro de novos usuários
 - 📅 Agendamento de horários
@@ -36,6 +42,24 @@ Cliente
 - 📋 Visualização dos próprios agendamentos
 - ✏️ Edição de agendamentos
 - ❌ Cancelamento de agendamentos
+
+🛡️ Área Administrativa
+- 📊 Dashboard administrativo
+- 📈 Gráfico de acompanhamento dos agendamentos
+- 📋 Visualização de todos os atendimentos
+- 🔍 Busca de clientes por nome
+- 🏷️ Filtros por status dos agendamentos
+- ✅ Confirmação de agendamentos
+- 🎯 Finalização de atendimentos
+- ❌ Cancelamento de atendimentos
+- 🗑️ Exclusão de agendamentos
+- 💰 Cálculo de faturamento estimado
+-  📊 Indicadores em tempo real:
+  - Total de agendamentos
+  - Confirmados
+  - Pendentes
+  - Cancelados
+  - Finalizados
 
 ---
 
