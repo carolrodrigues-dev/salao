@@ -30,6 +30,12 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
   <img src="assets/dash.png" width="500"/>
 </p>
 
+### Cadastro de Profissionais
+
+<p align="center">
+  <img src="assets/profissionais.png" width="500"/>
+</p>
+
 ---
 
 ## 📌 Funcionalidades
@@ -42,6 +48,8 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
 - 📋 Visualização dos próprios agendamentos
 - ✏️ Edição de agendamentos
 - ❌ Cancelamento de agendamentos
+
+---
 
 🛡️ Área Administrativa
 - 📊 Dashboard administrativo
@@ -63,8 +71,20 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+✂️ Gestão de Profissionais
+-➕ Cadastro de profissionais
+-✏️ Edição de profissionais
+-🗑️ Exclusão de profissionais
+-🔍 Busca de profissionais por nome
+-🟢 Ativação e desativação de profissionais
+-📸 Upload de foto do profissional
+-💵 Cadastro de valor do serviço
+-🎯 Cadastro de especialidade
+-📋 Listagem de profissionais cadastrados
 
+---
+
+## 🛠️ Tecnologias utilizadas
 - React.js
 - JavaScript (ES6+)
 - Firebase Authentication
