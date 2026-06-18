@@ -26,6 +26,9 @@ function Admin() {
     const [cancelados, setCancelados] = useState(0);
     const [agendamentos, setAgendamentos] = useState([]);
     const [finalizados, setFinalizados] = useState(0);
+    const [buscaCliente, setBuscaCliente] = useState('');
+    const [filtroStatus, setFiltroStatus] = useState('Todos');
+    const [faturamento, setFaturamento] = useState(0);
 
     useEffect(() => {
 
@@ -33,12 +36,15 @@ function Admin() {
             .collection('salao')
             .get()
             .then((resultado) => {
+            
 
                 let totalAgendamentos = 0;
                 let totalConfirmados = 0;
                 let totalPendentes = 0;
                 let totalCancelados = 0;
                 let totalFinalizados = 0;
+                let totalFaturamento = 0;
+
 
                 let lista = [];
 
@@ -56,7 +62,10 @@ function Admin() {
                     if (item.status === 'Confirmado') totalConfirmados++;
                     if (item.status === 'Pendente') totalPendentes++;
                     if (item.status === 'Cancelado') totalCancelados++;
-                    if (item.status === 'Finalizado') totalFinalizados++;
+                    if (item.status === 'Finalizado') {
+                    totalFinalizados++;
+                    totalFaturamento += Number(item.valor || 0);
+                    }
 
                 });
 
@@ -66,6 +75,7 @@ function Admin() {
                 setCancelados(totalCancelados);
                 setAgendamentos(lista);
                 setFinalizados(totalFinalizados);
+                setFaturamento(totalFaturamento);
 
             });
 
@@ -178,10 +188,61 @@ function Admin() {
                     <div className='card-admin'><h2>Pendentes</h2><span>{pendentes}</span></div>
                     <div className='card-admin'><h2>Cancelados</h2><span>{cancelados}</span></div>
                     <div className='card-admin'><h2>Finalizados</h2><span>{finalizados}</span></div>
+                    <div className='card-admin'><h2>Faturamento</h2><span>R$ {faturamento}</span></div>
                 </div>
 
                {/* GRÁFICO */}
 <div className="grafico-admin">
+
+    <div className="filtros-status">
+
+    <button
+    className={filtroStatus === 'Todos' ? 'ativo' : ''}
+    onClick={() => setFiltroStatus('Todos')}>
+    Todos
+</button>
+
+    <button
+        className={filtroStatus === 'Confirmado' ? 'ativo' : ''}
+        onClick={() => setFiltroStatus('Confirmado')}>
+        Confirmados
+    </button>
+
+    <button
+        className={filtroStatus === 'Pendente' ? 'ativo' : ''}
+        onClick={() => setFiltroStatus('Pendente')}>
+        Pendentes
+    </button>
+
+    <button
+        className={filtroStatus === 'Cancelado' ? 'ativo' : ''}
+        onClick={() => setFiltroStatus('Cancelado')}>
+        Cancelados
+    </button>
+
+    <button
+        className={filtroStatus === 'Finalizado' ? 'ativo' : ''}
+        onClick={() => setFiltroStatus('Finalizado')}>
+        Finalizados
+    </button>
+
+</div>
+
+<p className="contador-resultados">
+    📋 {
+        agendamentos
+            .filter(item =>
+                item.cliente
+                    ?.toLowerCase()
+                    .includes(buscaCliente.toLowerCase())
+            )
+            .filter(item =>
+                filtroStatus === 'Todos'
+                    ? true
+                    : item.status === filtroStatus
+            ).length
+    } agendamentos encontrados
+</p>
 
     <h2>Resumo dos Agendamentos</h2>
 
@@ -238,67 +299,106 @@ function Admin() {
 </div>
 
 
-
                 {/* LISTA */}
                 <div className='lista-agendamentos'>
 
-                    <h2>Painel de Agendamentos</h2>
+    <div className="topo-agendamentos">
 
-                    {agendamentos.map(item => (
+        <h2>Painel de Agendamentos</h2>
 
-                        <div key={item.id} className='agendamento-item'>
+        <div className="filtro-agendamentos">
+            <input
+                type="text"
+                placeholder="🔍 Buscar cliente..."
+                value={buscaCliente}
+                onChange={(e) => setBuscaCliente(e.target.value)}
+                className="input-busca"
+            />
+        </div>
+    </div>
 
-                            <div><strong>{item.cliente}</strong></div>
-                            <div>{item.tipo}</div>
-                            <div>{item.profissional}</div>
-                            <div>{item.hora}</div>
-                            <div>{item.status}</div>
+                  {agendamentos
+    .filter(item =>
+        item.cliente
+            ?.toLowerCase()
+            .includes(buscaCliente.toLowerCase())
+    )
+    .filter(item =>
+        filtroStatus === 'Todos'
+            ? true
+            : item.status === filtroStatus
+    )
+    .map(item => (  
 
-                            <div className='botoes-acoes'>
+    <div
+        key={item.id}
+        className='agendamento-item'
+    >
 
-                                <button
-                                    className='btn-confirmar'
-                                    onClick={() => confirmarAgendamento(item.id)}
-                                >
-                                    Confirmar
-                                </button>
+        <h3>{item.cliente}</h3>
 
-                                <button
-                                    className='btn-editar'
-                                    onClick={() => editarAgendamento(item.id)}
-                                >
-                                    Editar
-                                </button>
+        <p>
+            <strong>Serviço:</strong> {item.tipo}
+        </p>
 
-                                <button
-                                    className='btn-cancelar'
-                                    onClick={() => cancelarAgendamento(item.id)}
-                                >
-                                    Cancelar
-                                </button>
+        <p>
+            <strong>Profissional:</strong> {item.profissional}
+        </p>
 
-                                {/* ✔ FINALIZAR (NOVO) */}
-                                {item.status !== 'Finalizado' && (
-                                    <button
-                                        className='btn-finalizar'
-                                        onClick={() => finalizarAgendamento(item.id)}
-                                    >
-                                        Finalizar
-                                    </button>
-                                )}
+        <p>
+            <strong>Horário:</strong> {item.hora}
+        </p>
 
-                                <button
-                                    className='btn-excluir'
-                                    onClick={() => excluirAgendamento(item.id)}
-                                >
-                                    Excluir
-                                </button>
+        <div
+    className={`badge-status status-${item.status?.toLowerCase()}`}
+     >
+    {item.status}
+     </div>
 
-                            </div>
+        <div className='botoes-acoes'>
 
-                        </div>
+            <button
+                className='btn-confirmar'
+                onClick={() => confirmarAgendamento(item.id)}
+            >
+                Confirmar
+            </button>
 
-                    ))}
+            <button
+                className='btn-editar'
+                onClick={() => editarAgendamento(item.id)}
+            >
+                Editar
+            </button>
+
+            <button
+                className='btn-cancelar'
+                onClick={() => cancelarAgendamento(item.id)}
+            >
+                Cancelar
+            </button>
+
+            {item.status !== 'Finalizado' && (
+                <button
+                    className='btn-finalizar'
+                    onClick={() => finalizarAgendamento(item.id)}
+                >
+                    Finalizar
+                </button>
+            )}
+
+            <button
+                className='btn-excluir'
+                onClick={() => excluirAgendamento(item.id)}
+            >
+                Excluir
+            </button>
+
+        </div>
+
+    </div>
+
+))}
 
                 </div>
 
