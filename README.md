@@ -72,15 +72,15 @@ Este projeto é um sistema web desenvolvido para facilitar o agendamento de hor�
 ---
 
 ✂️ Gestão de Profissionais
--➕ Cadastro de profissionais
--✏️ Edição de profissionais
--🗑️ Exclusão de profissionais
--🔍 Busca de profissionais por nome
--🟢 Ativação e desativação de profissionais
--📸 Upload de foto do profissional
--💵 Cadastro de valor do serviço
--🎯 Cadastro de especialidade
--📋 Listagem de profissionais cadastrados
+- ➕ Cadastro de profissionais
+- ✏️ Edição de profissionais
+- 🗑️ Exclusão de profissionais
+- 🔍 Busca de profissionais por nome
+- 🟢 Ativação e desativação de profissionais
+- 📸 Upload de foto do profissional
+- 💵 Cadastro de valor do serviço
+- 🎯 Cadastro de especialidade
+- 📋 Listagem de profissionais cadastrados
 
 ---
 
